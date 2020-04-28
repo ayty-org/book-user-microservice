@@ -1,4 +1,4 @@
-package  br.com.biblioteca.bookuser.book;
+package br.com.biblioteca.bookuser.book;
 
 import br.com.biblioteca.bookuser.book.services.UpdateBookServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,6 +26,8 @@ public class UpdateBookServiceTest {
 
     @Mock
     private BookRepository bookRepository;
+
+    @Mock
     private UpdateBookServiceImpl updateBook;
 
     @BeforeEach

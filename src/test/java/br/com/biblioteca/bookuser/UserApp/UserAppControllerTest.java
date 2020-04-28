@@ -1,4 +1,4 @@
-package  br.com.biblioteca.bookuser.UserApp;
+package br.com.biblioteca.bookuser.UserApp;
 
 import br.com.biblioteca.bookuser.user.UserApp;
 import br.com.biblioteca.bookuser.user.services.DeleteUserAppService;
@@ -8,7 +8,6 @@ import br.com.biblioteca.bookuser.user.services.ListUserAppService;
 import br.com.biblioteca.bookuser.user.services.SaveUserAppService;
 import br.com.biblioteca.bookuser.user.services.UpdateUserAppService;
 import br.com.biblioteca.bookuser.user.v1.UserAppControllerV1;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -30,7 +29,6 @@ import java.util.Collections;
 import static br.com.biblioteca.bookuser.UserApp.builders.UserAppBuilder.createUserApp;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -48,8 +46,7 @@ public class UserAppControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
-    private ObjectMapper objectMapper;
+
     @MockBean
     private GetUserAppService getUserAppService;
     @MockBean
@@ -69,8 +66,8 @@ public class UserAppControllerTest {
 
         when(getUserAppService.find(1L)).thenReturn(createUserApp().id(1L).build());
 
-        mockMvc.perform(get("/v1/api/user/{id}",1L)
-                .accept(MediaType.APPLICATION_JSON ))
+        mockMvc.perform(get("/v1/api/user/{id}", 1L)
+                .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
@@ -85,8 +82,8 @@ public class UserAppControllerTest {
 
         //when(getUserAppService.find(anyLong())).thenReturn(createUserApp().id(2L).build());
 
-        mockMvc.perform(get("/v1/api/user/{id}",2L)
-                .accept(MediaType.APPLICATION_JSON ))
+        mockMvc.perform(get("/v1/api/user/{id}", 2L)
+                .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
@@ -100,7 +97,7 @@ public class UserAppControllerTest {
         ));
 
         mockMvc.perform(get("/v1/api/user")
-                .accept(MediaType.APPLICATION_JSON ))
+                .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[*]", hasSize(2)))
@@ -120,10 +117,10 @@ public class UserAppControllerTest {
     void whenValidListPageUserApp_thenReturnsUserAppPage() throws Exception { //pesquisa todos os UserApp com paginapção
         Page<UserApp> userAppPage = new PageImpl<>(Collections.singletonList(createUserApp().id(1L).build()));
 
-        when(listPageUserAppService.findPage(0,2)).thenReturn(userAppPage);
+        when(listPageUserAppService.findPage(0, 2)).thenReturn(userAppPage);
 
         mockMvc.perform(get("/v1/api/user/?page=0&size=2")
-                .accept(MediaType.APPLICATION_JSON ))
+                .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content[0].id", is(1)))
@@ -154,7 +151,7 @@ public class UserAppControllerTest {
 
     @Test
     @DisplayName("Deleta usuário")
-    void whenValidDeleteUserApp_thenReturns204() throws Exception{ // deleta UserApp
+    void whenValidDeleteUserApp_thenReturns204() throws Exception { // deleta UserApp
         mockMvc.perform(delete("/v1/api/user/{id}", 1L)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());

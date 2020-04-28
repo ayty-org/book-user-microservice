@@ -1,4 +1,4 @@
-package  br.com.biblioteca.bookuser.UserApp;
+package br.com.biblioteca.bookuser.UserApp;
 
 import br.com.biblioteca.bookuser.exceptions.UserAppNotFoundException;
 import br.com.biblioteca.bookuser.user.UserApp;
@@ -29,6 +29,8 @@ public class GetUserAppServiceTest {
 
     @Mock
     private UserAppRepository userAppRepository;
+
+    @Mock
     private GetUserAppServiceImpl findUserApp;
 
     @BeforeEach

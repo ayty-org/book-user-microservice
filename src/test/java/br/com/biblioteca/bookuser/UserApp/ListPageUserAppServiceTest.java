@@ -1,4 +1,4 @@
-package  br.com.biblioteca.bookuser.UserApp;
+package br.com.biblioteca.bookuser.UserApp;
 
 import br.com.biblioteca.bookuser.user.UserApp;
 import br.com.biblioteca.bookuser.user.UserAppRepository;
@@ -28,6 +28,8 @@ public class ListPageUserAppServiceTest {
 
     @Mock
     private UserAppRepository userAppRepository;
+
+    @Mock
     private ListPageUserAppServiceImpl listPageUserApp;
 
     @BeforeEach
@@ -39,7 +41,7 @@ public class ListPageUserAppServiceTest {
     @DisplayName("Deve retornar todos os livros com paginação")
     void shouldFindAllBook() {
 
-        when(listPageUserApp.findPage(0,2)).thenReturn(new PageImpl<>(Collections.nCopies(2, createUserApp().build())));
+        when(listPageUserApp.findPage(0, 2)).thenReturn(new PageImpl<>(Collections.nCopies(2, createUserApp().build())));
 
         Page<UserApp> userAppPage = listPageUserApp.findPage(0, 2);
 

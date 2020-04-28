@@ -1,4 +1,4 @@
-package  br.com.biblioteca.bookuser.UserApp;
+package br.com.biblioteca.bookuser.UserApp;
 
 import br.com.biblioteca.bookuser.exceptions.UserAppNotDeletedException;
 import br.com.biblioteca.bookuser.user.UserAppRepository;
@@ -26,6 +26,8 @@ public class DeleteUserAppServiceTest {
 
     @Mock
     private UserAppRepository userAppRepository;
+
+    @Mock
     private DeleteUserAppServiceImpl deleteUserApp;
 
     @BeforeEach

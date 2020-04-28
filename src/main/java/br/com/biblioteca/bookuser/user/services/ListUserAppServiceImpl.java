@@ -1,8 +1,7 @@
-package  br.com.biblioteca.bookuser.user.services;
+package br.com.biblioteca.bookuser.user.services;
 
 import br.com.biblioteca.bookuser.user.UserApp;
 import br.com.biblioteca.bookuser.user.UserAppRepository;
-import br.com.biblioteca.bookuser.user.services.ListUserAppService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

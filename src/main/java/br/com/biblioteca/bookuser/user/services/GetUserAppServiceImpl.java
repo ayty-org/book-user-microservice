@@ -1,4 +1,4 @@
-package  br.com.biblioteca.bookuser.user.services;
+package br.com.biblioteca.bookuser.user.services;
 
 import br.com.biblioteca.bookuser.exceptions.UserAppNotFoundException;
 import br.com.biblioteca.bookuser.user.UserApp;

@@ -1,4 +1,4 @@
-package  br.com.biblioteca.bookuser.book;
+package br.com.biblioteca.bookuser.book;
 
 import br.com.biblioteca.bookuser.book.services.GetBookServiceImpl;
 import br.com.biblioteca.bookuser.exceptions.BookNotFoundException;
@@ -7,7 +7,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -19,7 +18,6 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -29,6 +27,8 @@ public class GetBookServiceTest {
 
     @Mock
     private BookRepository bookRepository;
+
+    @Mock
     private GetBookServiceImpl findBook;
 
     @BeforeEach

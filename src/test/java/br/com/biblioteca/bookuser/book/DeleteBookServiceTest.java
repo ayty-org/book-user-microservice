@@ -1,4 +1,4 @@
-package  br.com.biblioteca.bookuser.book;
+package br.com.biblioteca.bookuser.book;
 
 import br.com.biblioteca.bookuser.book.services.DeleteBookServiceImpl;
 import br.com.biblioteca.bookuser.exceptions.BookIntegrityException;
@@ -27,6 +27,8 @@ public class DeleteBookServiceTest {
 
     @Mock
     private BookRepository bookRepository;
+
+    @Mock
     private DeleteBookServiceImpl deleteBook;
 
     @BeforeEach

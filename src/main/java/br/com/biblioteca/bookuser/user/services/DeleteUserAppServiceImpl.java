@@ -21,9 +21,9 @@ public class DeleteUserAppServiceImpl implements DeleteUserAppService {
             throw new UserAppNotDeletedException();
         }
         Optional<UserApp> user = userAppRepository.findById(id);
-        if (user.isPresent()){
+        if (user.isPresent()) {
             UserApp userApp = user.get();
-            if (userApp.getLoanSpecificID() != null){
+            if (userApp.getLoanSpecificID() != null) {
                 throw new UserAppIntegrityException();
             }
         }

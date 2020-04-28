@@ -13,9 +13,7 @@ public class GetBookServiceImpl implements GetBookService {
     private final BookRepository bookRepository;
 
     public Book find(Long id) {
-        Book book = bookRepository.findById(id).orElseThrow(BookNotFoundException::new);
-        book.setSpecificID("00" + id);
-        return book;
+        return bookRepository.findById(id).orElseThrow(BookNotFoundException::new);
     }
 
 }

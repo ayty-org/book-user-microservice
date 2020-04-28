@@ -1,4 +1,4 @@
-package  br.com.biblioteca.bookuser.book;
+package br.com.biblioteca.bookuser.book;
 
 import br.com.biblioteca.bookuser.book.services.ListPageBookServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,6 +26,8 @@ public class ListPageBookServiceTest {
 
     @Mock
     private BookRepository bookRepository;
+
+    @Mock
     private ListPageBookServiceImpl listPageBook;
 
     @BeforeEach

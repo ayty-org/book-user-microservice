@@ -1,4 +1,4 @@
-package  br.com.biblioteca.bookuser.UserApp;
+package br.com.biblioteca.bookuser.UserApp;
 
 import br.com.biblioteca.bookuser.user.UserApp;
 import br.com.biblioteca.bookuser.user.UserAppRepository;
@@ -28,6 +28,8 @@ public class ListUserAppServiceTest {
 
     @Mock
     private UserAppRepository userAppRepository;
+
+    @Mock
     private ListUserAppServiceImpl findAllUserApp;
 
     @BeforeEach

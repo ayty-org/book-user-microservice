@@ -30,6 +30,7 @@ public class SwaggerConfig {
                 .paths(PathSelectors.any())
                 .build();
     }
+
     @Primary
     @Bean
     public SwaggerResourcesProvider swaggerResourcesProvider(

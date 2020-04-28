@@ -1,6 +1,5 @@
-package  br.com.biblioteca.bookuser.book;
+package br.com.biblioteca.bookuser.book;
 
-import br.com.biblioteca.bookuser.book.BookRepository;
 import br.com.biblioteca.bookuser.book.services.ListBookServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -27,6 +26,8 @@ public class ListBookServiceTest {
 
     @Mock
     private BookRepository bookRepository;
+
+    @Mock
     private ListBookServiceImpl findAllBook;
 
     @BeforeEach
@@ -44,7 +45,7 @@ public class ListBookServiceTest {
                         createBook().author("Author Teste GET 03").build()).collect(Collectors.toList())
         );
 
-        List <Book> result = this.findAllBook.findAll();
+        List<Book> result = this.findAllBook.findAll();
 
         //verificação
         assertAll("book",

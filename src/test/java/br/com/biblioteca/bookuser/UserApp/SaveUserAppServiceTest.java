@@ -1,4 +1,4 @@
-package  br.com.biblioteca.bookuser.UserApp;
+package br.com.biblioteca.bookuser.UserApp;
 
 
 import br.com.biblioteca.bookuser.user.UserApp;
@@ -27,6 +27,8 @@ public class SaveUserAppServiceTest {
 
     @Mock
     private UserAppRepository userAppRepository;
+
+    @Mock
     private SaveUserAppServiceImpl saveUserApp;
 
     @BeforeEach
@@ -43,7 +45,7 @@ public class SaveUserAppServiceTest {
 
         //preparação
         ArgumentCaptor<UserApp> captorUserApp = ArgumentCaptor.forClass(UserApp.class);
-        verify(userAppRepository,times(2)).save(captorUserApp.capture());
+        verify(userAppRepository, times(2)).save(captorUserApp.capture());
 
         UserApp result = captorUserApp.getValue();
 
