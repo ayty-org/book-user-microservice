@@ -17,6 +17,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -106,7 +108,9 @@ public class BookControllerTest {
     void whenValidListPageBook_thenReturnsBookPage() throws Exception { //pesquisa todos os livro
         Page<Book> bookPage = new PageImpl<>(Collections.singletonList(createBook().id(1L).build()));
 
-        when(listPageBookService.findPage(0, 2)).thenReturn(bookPage);
+        Pageable pageable = PageRequest.of(0, 2);
+
+        when(listPageBookService.findPage(pageable)).thenReturn(bookPage);
 
         mockMvc.perform(get("/v1/api/book/?page=0&size=2")
                 .contentType(MediaType.APPLICATION_JSON))

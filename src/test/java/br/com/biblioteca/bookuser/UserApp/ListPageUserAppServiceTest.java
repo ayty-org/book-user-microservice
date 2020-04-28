@@ -12,6 +12,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.Collections;
 
@@ -41,9 +43,11 @@ public class ListPageUserAppServiceTest {
     @DisplayName("Deve retornar todos os livros com paginação")
     void shouldFindAllBook() {
 
-        when(listPageUserApp.findPage(0, 2)).thenReturn(new PageImpl<>(Collections.nCopies(2, createUserApp().build())));
+        Pageable pageable = PageRequest.of(0, 2);
 
-        Page<UserApp> userAppPage = listPageUserApp.findPage(0, 2);
+        when(listPageUserApp.findPage(pageable)).thenReturn(new PageImpl<>(Collections.nCopies(2, createUserApp().build())));
+
+        Page<UserApp> userAppPage = listPageUserApp.findPage(pageable);
 
         //verificação
         assertAll("userApp",

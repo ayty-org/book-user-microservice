@@ -18,6 +18,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -117,9 +119,11 @@ public class UserAppControllerTest {
     void whenValidListPageUserApp_thenReturnsUserAppPage() throws Exception { //pesquisa todos os UserApp com paginapção
         Page<UserApp> userAppPage = new PageImpl<>(Collections.singletonList(createUserApp().id(1L).build()));
 
-        when(listPageUserAppService.findPage(0, 2)).thenReturn(userAppPage);
+        Pageable pageable = PageRequest.of(0, 2);
 
-        mockMvc.perform(get("/v1/api/user/?page=0&size=2")
+        when(listPageUserAppService.findPage(pageable)).thenReturn(userAppPage);
+
+        mockMvc.perform(get("/v1/api/user/page/?page=0&size=2")
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())

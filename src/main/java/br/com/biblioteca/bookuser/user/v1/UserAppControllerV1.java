@@ -1,15 +1,19 @@
 package br.com.biblioteca.bookuser.user.v1;
 
+import br.com.biblioteca.bookuser.user.LoanUserAppSpecificIdDTO;
 import br.com.biblioteca.bookuser.user.UserApp;
 import br.com.biblioteca.bookuser.user.UserAppDTO;
 import br.com.biblioteca.bookuser.user.services.DeleteUserAppService;
+import br.com.biblioteca.bookuser.user.services.GetSpecificIdUserAppService;
 import br.com.biblioteca.bookuser.user.services.GetUserAppService;
 import br.com.biblioteca.bookuser.user.services.ListPageUserAppService;
 import br.com.biblioteca.bookuser.user.services.ListUserAppService;
 import br.com.biblioteca.bookuser.user.services.SaveUserAppService;
 import br.com.biblioteca.bookuser.user.services.UpdateUserAppService;
+import br.com.biblioteca.bookuser.user.services.UpdateUserAppSpecificIdLoan;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +22,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,6 +39,8 @@ public class UserAppControllerV1 {
     private final SaveUserAppService saveUserAppService;
     private final UpdateUserAppService updateUserAppService;
     private final DeleteUserAppService deleteUserAppService;
+    private final GetSpecificIdUserAppService getSpecificIdUserAppService;
+    private final UpdateUserAppSpecificIdLoan updateUserAppSpecificIdLoan;
 
     @GetMapping(value = "/{id}") //lista usuário por id
     public UserAppDTO find(@PathVariable Long id) {
@@ -47,9 +52,14 @@ public class UserAppControllerV1 {
         return UserAppDTO.fromAll(listUserAppService.findAll());
     }
 
-    @GetMapping(params = {"page", "size"}) //lista todas os usuários com paginação
-    public Page<UserAppDTO> findPage(@RequestParam("page") Integer page, @RequestParam("size") Integer size) {
-        return UserAppDTO.fromPage(listPageUserAppService.findPage(page, size));
+    @GetMapping(path = {"/page"}) //lista todas os usuários com paginação
+    public Page<UserAppDTO> findPage(Pageable pageable) {
+        return UserAppDTO.fromPage(listPageUserAppService.findPage(pageable));
+    }
+
+    @GetMapping(value = "/getUserSpecificId/{id}") //retorna usuário por seu especific id
+    public UserAppDTO find(@PathVariable String id) {
+        return UserAppDTO.from(getSpecificIdUserAppService.findBySpecificID(id));
     }
 
     @ResponseStatus(code = HttpStatus.CREATED)
@@ -59,9 +69,15 @@ public class UserAppControllerV1 {
     }
 
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    @PutMapping(value = "/{id}") //atualiza usuário
+    @PutMapping(value = "/{id}") //atualiza usuário por id
     public void update(@Valid @RequestBody UserAppDTO userAppDTO, @PathVariable Long id) {
         updateUserAppService.update(UserApp.to(userAppDTO), id);
+    }
+
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    @PutMapping(value = "/updateLoanSpecificId/{id}") //atualiza variavel loan em usuário
+    public void update(@Valid @PathVariable String id, @RequestBody LoanUserAppSpecificIdDTO loanUserAppSpecificIdDTO) {
+        updateUserAppSpecificIdLoan.update(loanUserAppSpecificIdDTO, id);
     }
 
     @ResponseStatus(code = HttpStatus.NO_CONTENT)

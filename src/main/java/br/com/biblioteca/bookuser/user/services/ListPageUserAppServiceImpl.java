@@ -16,8 +16,7 @@ public class ListPageUserAppServiceImpl implements ListPageUserAppService {
     private final UserAppRepository userAppRepository;
 
     @Override
-    public Page<UserApp> findPage(Integer page, Integer size) {
-        Pageable pageRequest = PageRequest.of(page, size, Sort.Direction.ASC, "id");
-        return userAppRepository.findAll(pageRequest);
+    public Page<UserApp> findPage(Pageable pageable) {
+        return userAppRepository.findAll(pageable);
     }
 }
