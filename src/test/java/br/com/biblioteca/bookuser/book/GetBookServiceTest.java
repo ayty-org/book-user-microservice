@@ -28,7 +28,6 @@ public class GetBookServiceTest {
     @Mock
     private BookRepository bookRepository;
 
-    @Mock
     private GetBookServiceImpl findBook;
 
     @BeforeEach

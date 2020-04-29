@@ -1,13 +1,18 @@
 package br.com.biblioteca.bookuser.book;
 
 import br.com.biblioteca.bookuser.book.services.DeleteBookService;
+import br.com.biblioteca.bookuser.book.services.DeleteBookServiceImpl;
 import br.com.biblioteca.bookuser.book.services.GetBookService;
+import br.com.biblioteca.bookuser.book.services.GetSpecificIdBookService;
 import br.com.biblioteca.bookuser.book.services.ListBookService;
+import br.com.biblioteca.bookuser.book.services.ListBookSpecificIdService;
 import br.com.biblioteca.bookuser.book.services.ListPageBookService;
 import br.com.biblioteca.bookuser.book.services.SaveBookService;
 import br.com.biblioteca.bookuser.book.services.UpdateBookService;
+import br.com.biblioteca.bookuser.book.services.UpdateBookSpecificIdLoan;
 import br.com.biblioteca.bookuser.book.v1.BookControllerV1;
 import org.assertj.core.util.Lists;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -30,6 +35,8 @@ import java.util.Collections;
 import static br.com.biblioteca.bookuser.book.builders.BookBuilder.createBook;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -60,12 +67,18 @@ public class BookControllerTest {
     private UpdateBookService updateBookService;
     @MockBean
     private DeleteBookService deleteBookService;
+    @MockBean
+    private GetSpecificIdBookService getSpecificIdBookService;
+    @MockBean
+    private UpdateBookSpecificIdLoan updateBookSpecificIdLoan;
+    @MockBean
+    private ListBookSpecificIdService listBookSpecificIdService;
 
     @Test
     @DisplayName("Pesquisa livro por id")
-    void whenValidGetIdBook_thenReturnsBook() throws Exception { //pesquisa por livro
+    void whenValidGetIdBook_thenReturnsBook() throws Exception {
 
-        when(getBookService.find(1L)).thenReturn(createBook().id(1L).build());
+        when(getBookService.find(anyLong())).thenReturn(createBook().id(1L).build());
 
         mockMvc.perform(get("/v1/api/book/{id}", 1L)
                 .accept(MediaType.APPLICATION_JSON))
@@ -76,11 +89,13 @@ public class BookControllerTest {
                 .andExpect(jsonPath("$.resume", is("teste resume")))
                 .andExpect(jsonPath("$.isbn", is("teste isbn")))
                 .andExpect(jsonPath("$.title", is("teste title")));
+
+        verify(getBookService).find(anyLong());
     }
 
     @Test
     @DisplayName("Pesquisa lista de livros")
-    void whenValidListBook_thenReturnsBook() throws Exception { //pesquisa todos os livro
+    void whenValidListBook_thenReturnsBook() throws Exception {
 
         when(listBookService.findAll()).thenReturn(Lists.newArrayList(
                 createBook().id(1L).build(), createBook().id(2L).build()
@@ -101,18 +116,21 @@ public class BookControllerTest {
                 .andExpect(jsonPath("$[1].resume", is("teste resume")))
                 .andExpect(jsonPath("$[1].isbn", is("teste isbn")))
                 .andExpect(jsonPath("$[1].title", is("teste title")));
+
+        verify(listBookService).findAll();
     }
 
     @Test
     @DisplayName("Pesquisa livro com paginação")
-    void whenValidListPageBook_thenReturnsBookPage() throws Exception { //pesquisa todos os livro
+    void whenValidListPageBook_thenReturnsBookPage() throws Exception {
+
         Page<Book> bookPage = new PageImpl<>(Collections.singletonList(createBook().id(1L).build()));
 
         Pageable pageable = PageRequest.of(0, 2);
 
         when(listPageBookService.findPage(pageable)).thenReturn(bookPage);
 
-        mockMvc.perform(get("/v1/api/book/?page=0&size=2")
+        mockMvc.perform(get("/v1/api/book/page?page=0&size=2")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -121,26 +139,32 @@ public class BookControllerTest {
                 .andExpect(jsonPath("$.content[0].resume", is("teste resume")))
                 .andExpect(jsonPath("$.content[0].isbn", is("teste isbn")))
                 .andExpect(jsonPath("$.content[0].title", is("teste title")));
+
+        verify(listPageBookService).findPage(pageable);
     }
 
     @Test
     @DisplayName("Salva um livro")
-    void whenValidSaveBook_thenReturns201() throws Exception { //insere livro
+    void whenValidSaveBook_thenReturns201() throws Exception {
         mockMvc.perform(post("/v1/api/book")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(readJson("bookDTO.json")))
                 .andDo(print())
                 .andExpect(status().isCreated());
+
+        //verify(saveBookService).insert(createBook().build());
     }
 
     @Test
     @DisplayName("Edita um livro")
-    void whenValidUpdateBook_thenReturns204() throws Exception { //atualiza um livro
+    void whenValidUpdateBook_thenReturns204() throws Exception {
         mockMvc.perform(put("/v1/api/book/{id}", 1L)
                 .content(readJson("bookUpdate.json"))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNoContent());
+
+        //verify(updateBookService).update(Book.to(BookDTO.builder().build()),1L);
     }
 
     @Test
@@ -149,6 +173,8 @@ public class BookControllerTest {
         mockMvc.perform(delete("/v1/api/book/{id}", 1L)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
+
+        verify(deleteBookService).delete(1L);
     }
 
     public static String readJson(String file) throws Exception {

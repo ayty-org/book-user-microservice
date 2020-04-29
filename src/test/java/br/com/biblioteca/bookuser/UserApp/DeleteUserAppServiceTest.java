@@ -27,7 +27,6 @@ public class DeleteUserAppServiceTest {
     @Mock
     private UserAppRepository userAppRepository;
 
-    @Mock
     private DeleteUserAppServiceImpl deleteUserApp;
 
     @BeforeEach
@@ -38,9 +37,9 @@ public class DeleteUserAppServiceTest {
     @Test
     @DisplayName("Deve deletar um usuário")
     void shouldUserAppDeleted() {
-        when(userAppRepository.existsById(1L)).thenReturn(true);
+        when(userAppRepository.existsById(anyLong())).thenReturn(true);
         deleteUserApp.delete(1L);
-        verify(userAppRepository).existsById(1L);
+        verify(userAppRepository).existsById(anyLong());
     }
 
     @Test

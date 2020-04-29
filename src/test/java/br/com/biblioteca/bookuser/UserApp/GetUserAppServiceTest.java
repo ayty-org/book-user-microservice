@@ -30,7 +30,6 @@ public class GetUserAppServiceTest {
     @Mock
     private UserAppRepository userAppRepository;
 
-    @Mock
     private GetUserAppServiceImpl findUserApp;
 
     @BeforeEach

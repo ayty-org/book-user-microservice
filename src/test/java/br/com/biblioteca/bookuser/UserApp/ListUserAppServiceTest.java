@@ -29,7 +29,6 @@ public class ListUserAppServiceTest {
     @Mock
     private UserAppRepository userAppRepository;
 
-    @Mock
     private ListUserAppServiceImpl findAllUserApp;
 
     @BeforeEach

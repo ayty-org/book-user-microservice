@@ -25,7 +25,6 @@ public class SaveBookServiceTest {
     @Mock
     private BookRepository bookRepository;
 
-    @Mock
     private SaveBookServiceImpl saveBook;
 
     @BeforeEach

@@ -28,7 +28,6 @@ public class SaveUserAppServiceTest {
     @Mock
     private UserAppRepository userAppRepository;
 
-    @Mock
     private SaveUserAppServiceImpl saveUserApp;
 
     @BeforeEach

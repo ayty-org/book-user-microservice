@@ -31,7 +31,6 @@ public class ListPageUserAppServiceTest {
     @Mock
     private UserAppRepository userAppRepository;
 
-    @Mock
     private ListPageUserAppServiceImpl listPageUserApp;
 
     @BeforeEach

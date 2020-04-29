@@ -28,7 +28,6 @@ public class DeleteBookServiceTest {
     @Mock
     private BookRepository bookRepository;
 
-    @Mock
     private DeleteBookServiceImpl deleteBook;
 
     @BeforeEach
@@ -39,9 +38,9 @@ public class DeleteBookServiceTest {
     @Test
     @DisplayName("Deve deletar um livro")
     void shouldBookDeleted() {
-        when(bookRepository.existsById(1L)).thenReturn(true);
+        when(bookRepository.existsById(anyLong())).thenReturn(true);
         deleteBook.delete(1L);
-        verify(bookRepository).existsById(1L);
+        verify(bookRepository).existsById(anyLong());
     }
 
     @Test
@@ -54,8 +53,8 @@ public class DeleteBookServiceTest {
     @Test
     @DisplayName("Deve lançar exceção quando o livro tiver sido emprestado")
     void shouldThrowBookIntegrityException() {
-        when(bookRepository.existsById(2L)).thenReturn(true);
-        when(bookRepository.findById(2L)).thenReturn(Optional.of(createBook().loanSpecificID("002").build()));
+        when(bookRepository.existsById(anyLong())).thenReturn(true);
+        when(bookRepository.findById(anyLong())).thenReturn(Optional.of(createBook().loanSpecificID("002").build()));
         assertThrows(BookIntegrityException.class, () -> this.deleteBook.delete(2L));
     }
 }
