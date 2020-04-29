@@ -1,6 +1,7 @@
 package br.com.biblioteca.bookuser.book;
 
 import br.com.biblioteca.bookuser.book.services.UpdateBookServiceImpl;
+import br.com.biblioteca.bookuser.exceptions.BookNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -16,6 +17,7 @@ import static br.com.biblioteca.bookuser.book.builders.BookBuilder.createBook;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -54,6 +56,13 @@ public class UpdateBookServiceTest {
                 () -> assertThat(result.getIsbn(), is("teste isbn")),
                 () -> assertThat(result.getTitle(), is("teste title"))
         );
+    }
+
+    @Test
+    @DisplayName("Deve lançar exceção quando o livro não for encontrado")
+    void shouldThrowBookNotFoundException() {
+        when(bookRepository.findById(anyLong())).thenReturn(Optional.empty());
+        assertThrows(BookNotFoundException.class, () -> this.updateBook.update(createBook().build(),1L));
     }
 }
 

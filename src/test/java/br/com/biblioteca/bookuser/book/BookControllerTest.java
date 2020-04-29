@@ -1,7 +1,6 @@
 package br.com.biblioteca.bookuser.book;
 
 import br.com.biblioteca.bookuser.book.services.DeleteBookService;
-import br.com.biblioteca.bookuser.book.services.DeleteBookServiceImpl;
 import br.com.biblioteca.bookuser.book.services.GetBookService;
 import br.com.biblioteca.bookuser.book.services.GetSpecificIdBookService;
 import br.com.biblioteca.bookuser.book.services.ListBookService;
@@ -9,11 +8,10 @@ import br.com.biblioteca.bookuser.book.services.ListBookSpecificIdService;
 import br.com.biblioteca.bookuser.book.services.ListPageBookService;
 import br.com.biblioteca.bookuser.book.services.SaveBookService;
 import br.com.biblioteca.bookuser.book.services.UpdateBookService;
-import br.com.biblioteca.bookuser.book.services.UpdateBookSpecificIdLoan;
-import br.com.biblioteca.bookuser.book.services.UpdateStatusBook;
+import br.com.biblioteca.bookuser.book.services.UpdateBookSpecificIdLoanService;
+import br.com.biblioteca.bookuser.book.services.UpdateStatusBookService;
 import br.com.biblioteca.bookuser.book.v1.BookControllerV1;
 import org.assertj.core.util.Lists;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -73,11 +71,11 @@ public class BookControllerTest {
     @MockBean
     private GetSpecificIdBookService getSpecificIdBookService;
     @MockBean
-    private UpdateBookSpecificIdLoan updateBookSpecificIdLoan;
+    private UpdateBookSpecificIdLoanService updateBookSpecificIdLoanService;
     @MockBean
     private ListBookSpecificIdService listBookSpecificIdService;
     @MockBean
-    private UpdateStatusBook updateStatusBook;
+    private UpdateStatusBookService updateStatusBookService;
 
     @Test
     @DisplayName("Pesquisa livro por id")

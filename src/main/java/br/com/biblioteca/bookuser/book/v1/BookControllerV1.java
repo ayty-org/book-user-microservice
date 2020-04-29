@@ -2,7 +2,6 @@ package br.com.biblioteca.bookuser.book.v1;
 
 import br.com.biblioteca.bookuser.book.Book;
 import br.com.biblioteca.bookuser.book.BookDTO;
-import br.com.biblioteca.bookuser.book.LoanBookSpecificIdDTO;
 import br.com.biblioteca.bookuser.book.services.DeleteBookService;
 import br.com.biblioteca.bookuser.book.services.GetBookService;
 import br.com.biblioteca.bookuser.book.services.GetSpecificIdBookService;
@@ -11,8 +10,8 @@ import br.com.biblioteca.bookuser.book.services.ListBookSpecificIdService;
 import br.com.biblioteca.bookuser.book.services.ListPageBookService;
 import br.com.biblioteca.bookuser.book.services.SaveBookService;
 import br.com.biblioteca.bookuser.book.services.UpdateBookService;
-import br.com.biblioteca.bookuser.book.services.UpdateBookSpecificIdLoan;
-import br.com.biblioteca.bookuser.book.services.UpdateStatusBook;
+import br.com.biblioteca.bookuser.book.services.UpdateBookSpecificIdLoanService;
+import br.com.biblioteca.bookuser.book.services.UpdateStatusBookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -43,9 +41,9 @@ public class BookControllerV1 {
     private final UpdateBookService updateBookService;
     private final DeleteBookService deleteBookService;
     private final GetSpecificIdBookService getSpecificIdBookService;
-    private final UpdateBookSpecificIdLoan updateBookSpecificIdLoan;
+    private final UpdateBookSpecificIdLoanService updateBookSpecificIdLoanService;
     private final ListBookSpecificIdService listBookSpecificIdService;
-    private final UpdateStatusBook updateStatusBook;
+    private final UpdateStatusBookService updateStatusBookService;
 
     @GetMapping(value = "/{id}") //lista livros por id
     public BookDTO find(@PathVariable Long id) {
@@ -87,13 +85,13 @@ public class BookControllerV1 {
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     @PutMapping(value = "/updateStatusBook/{id}")
     public void update(@Valid @RequestBody boolean status, @PathVariable String id) {
-        updateStatusBook.updateStatusBook(status, id);
+        updateStatusBookService.updateStatusBook(status, id);
     }
 
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     @PutMapping(value = "/updateLoanSpecificId/{id}") //atualiza loan do livro
-    public void update(@Valid @RequestBody LoanBookSpecificIdDTO loanBookSpecificIdDTO, @PathVariable String id) {
-        updateBookSpecificIdLoan.updateSpecificId(loanBookSpecificIdDTO, id);
+    public void update(@Valid @RequestBody String loanBookSpecificIdDTO, @PathVariable String id) {
+        updateBookSpecificIdLoanService.updateSpecificId(loanBookSpecificIdDTO, id);
     }
 
     @ResponseStatus(code = HttpStatus.NO_CONTENT)

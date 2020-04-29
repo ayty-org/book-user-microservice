@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class UpdateStatusBookImpl implements UpdateStatusBook {
+public class UpdateStatusBookServiceImpl implements UpdateStatusBookService {
 
     private final BookRepository bookRepository;
 
