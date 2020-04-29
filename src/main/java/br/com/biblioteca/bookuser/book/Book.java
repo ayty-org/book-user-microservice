@@ -36,6 +36,8 @@ public class Book implements Serializable {
 
     private LocalDate yearBook; //ano
 
+    private boolean status;
+
     private String specificID;
 
     private String loanSpecificID;
@@ -49,6 +51,7 @@ public class Book implements Serializable {
                 .isbn(bookDTO.getIsbn())
                 .author(bookDTO.getAuthor())
                 .yearBook(bookDTO.getYearBook())
+                .status(bookDTO.isStatus())
                 .loanSpecificID(bookDTO.getLoanSpecificID())
                 .build();
     }

@@ -40,6 +40,8 @@ public class BookDTO {
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate yearBook;
 
+    public boolean status;
+
     private String specificID;
 
     private String loanSpecificID;
@@ -53,6 +55,7 @@ public class BookDTO {
                 .isbn(book.getIsbn())
                 .author(book.getAuthor())
                 .yearBook(book.getYearBook())
+                .status(book.isStatus())
                 .specificID(book.getSpecificID())
                 .loanSpecificID(book.getLoanSpecificID())
                 .build();

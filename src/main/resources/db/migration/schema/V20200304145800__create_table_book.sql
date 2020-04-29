@@ -7,6 +7,7 @@ CREATE TABLE book(
 	year_book date NULL,
 	specificid varchar(1000) NULL,
 	loan_specificid varchar(1000) NULL,
+	status boolean NOT NULL,
 
     CONSTRAINT book_pkey PRIMARY KEY (id)
 );

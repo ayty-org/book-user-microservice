@@ -12,6 +12,7 @@ import br.com.biblioteca.bookuser.book.services.ListPageBookService;
 import br.com.biblioteca.bookuser.book.services.SaveBookService;
 import br.com.biblioteca.bookuser.book.services.UpdateBookService;
 import br.com.biblioteca.bookuser.book.services.UpdateBookSpecificIdLoan;
+import br.com.biblioteca.bookuser.book.services.UpdateStatusBook;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -44,6 +45,7 @@ public class BookControllerV1 {
     private final GetSpecificIdBookService getSpecificIdBookService;
     private final UpdateBookSpecificIdLoan updateBookSpecificIdLoan;
     private final ListBookSpecificIdService listBookSpecificIdService;
+    private final UpdateStatusBook updateStatusBook;
 
     @GetMapping(value = "/{id}") //lista livros por id
     public BookDTO find(@PathVariable Long id) {
@@ -80,6 +82,12 @@ public class BookControllerV1 {
     @PutMapping(value = "/{id}") //atualizar uma Book
     public void update(@Valid @RequestBody BookDTO bookDTO, @PathVariable Long id) {
         updateBookService.update(Book.to(bookDTO), id);
+    }
+
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    @PutMapping(value = "/updateStatusBook/{id}")
+    public void update(@Valid @RequestBody boolean status, @PathVariable String id) {
+        updateStatusBook.updateStatusBook(status, id);
     }
 
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
