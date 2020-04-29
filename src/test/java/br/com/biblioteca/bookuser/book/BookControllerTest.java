@@ -10,6 +10,7 @@ import br.com.biblioteca.bookuser.book.services.ListPageBookService;
 import br.com.biblioteca.bookuser.book.services.SaveBookService;
 import br.com.biblioteca.bookuser.book.services.UpdateBookService;
 import br.com.biblioteca.bookuser.book.services.UpdateBookSpecificIdLoan;
+import br.com.biblioteca.bookuser.book.services.UpdateStatusBook;
 import br.com.biblioteca.bookuser.book.v1.BookControllerV1;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +36,9 @@ import java.util.Collections;
 import static br.com.biblioteca.bookuser.book.builders.BookBuilder.createBook;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -73,6 +76,8 @@ public class BookControllerTest {
     private UpdateBookSpecificIdLoan updateBookSpecificIdLoan;
     @MockBean
     private ListBookSpecificIdService listBookSpecificIdService;
+    @MockBean
+    private UpdateStatusBook updateStatusBook;
 
     @Test
     @DisplayName("Pesquisa livro por id")
@@ -152,7 +157,7 @@ public class BookControllerTest {
                 .andDo(print())
                 .andExpect(status().isCreated());
 
-        //verify(saveBookService).insert(createBook().build());
+        verify(saveBookService).insert(any(Book.class));
     }
 
     @Test
@@ -164,7 +169,7 @@ public class BookControllerTest {
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
-        //verify(updateBookService).update(Book.to(BookDTO.builder().build()),1L);
+        verify(updateBookService).update(any(Book.class), eq(1L));
     }
 
     @Test

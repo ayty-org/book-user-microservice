@@ -1,6 +1,7 @@
 package br.com.biblioteca.bookuser.book;
 
-import br.com.biblioteca.bookuser.book.services.GetBookServiceImpl;
+import br.com.biblioteca.bookuser.book.services.GetSpecificIdBookServiceImpl;
+import br.com.biblioteca.bookuser.exceptions.BookNotAvailableException;
 import br.com.biblioteca.bookuser.exceptions.BookNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -19,43 +20,43 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @Tag("service")
 @DisplayName("Valida funcionalidade do serviço responsável por pesquisar um book")
-public class GetBookServiceTest {
+public class GetSpecificIdBookServiceTest {
 
     @Mock
     private BookRepository bookRepository;
 
-    private GetBookServiceImpl findBook;
+    private GetSpecificIdBookServiceImpl findBook;
 
     @BeforeEach
     public void setUp() {
-        this.findBook = new GetBookServiceImpl(bookRepository);
+        this.findBook = new GetSpecificIdBookServiceImpl(bookRepository);
     }
 
     @Test
-    @DisplayName("Deve retornar um livro")
-    void shouldFindByIdBook() { // testando buscar livro por id
+    @DisplayName("Deve retornar um livro pesquisando por seu specific id")
+    void shouldFindByIdBook() {
 
-        when(bookRepository.findById(anyLong())).thenReturn(
-                Optional.of(createBook().id(1L).author("Author Teste GET").build())
+        when(bookRepository.findBySpecificID(anyString())).thenReturn(
+                Optional.of(createBook().status(false).build())
         );
 
-        Book result = this.findBook.find(1L);
+        Book result = this.findBook.findBySpecificID("001");
 
         //verificação
         assertAll("book",
                 () -> assertThat(result.getId(), is(1L)),
-                () -> assertThat(result.getAuthor(), is("Author Teste GET")),
+                () -> assertThat(result.getAuthor(), is("teste author")),
                 () -> assertThat(result.getResume(), is("teste resume")),
                 () -> assertThat(result.getIsbn(), is("teste isbn")),
                 () -> assertThat(result.getTitle(), is("teste title")),
                 () -> assertThat(result.getYearBook(), is(LocalDate.ofEpochDay(25 - 04 - 2020))),
-                () -> assertThat(result.isStatus(), is(true)),
+                () -> assertThat(result.isStatus(), is(false)),
                 () -> assertThat(result.getSpecificID(), is("001")),
                 () -> assertNull(result.getLoanSpecificID())
         );
@@ -64,7 +65,16 @@ public class GetBookServiceTest {
     @Test
     @DisplayName("Deve lançar exceção quando o livro não for encontrado")
     void shouldThrowBookNotFoundException() {
-        when(bookRepository.findById(anyLong())).thenReturn(Optional.empty());
-        assertThrows(BookNotFoundException.class, () -> this.findBook.find(1L));
+        when(bookRepository.findBySpecificID(anyString())).thenReturn(Optional.empty());
+        assertThrows(BookNotFoundException.class, () -> this.findBook.findBySpecificID("001"));
     }
+
+    @Test
+    @DisplayName("Deve lançar exceção quando o livro não estiver disponivel para emprestimos")
+    void shouldThrowBookNotAvailableException() {
+        when(bookRepository.findBySpecificID(anyString())).thenReturn(Optional.of(createBook().build()));
+        assertThrows(BookNotAvailableException.class, () -> this.findBook.findBySpecificID("001"));
+    }
+
+
 }
