@@ -60,7 +60,7 @@ public class BookControllerV1 {
         return BookDTO.fromPage(listPageBookService.findPage(pageable));
     }
 
-    @GetMapping(value = "/getBookSpecificId/{id}") //lista usuário por seu specificId
+    @GetMapping(value = "/getBookSpecificId/{id}") //lista livro por seu specificId
     public BookDTO find(@PathVariable String id) {
         return BookDTO.from(getSpecificIdBookService.findBySpecificID(id));
     }
