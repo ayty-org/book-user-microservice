@@ -21,6 +21,7 @@ import static br.com.biblioteca.bookuser.UserApp.builders.UserAppBuilder.createU
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -55,9 +56,13 @@ public class ListPageUserAppServiceTest {
                 () -> assertThat(userAppPage.getContent().get(0).getName(), is("teste nome")),
                 () -> assertThat(userAppPage.getContent().get(0).getAge(), is(20)),
                 () -> assertThat(userAppPage.getContent().get(0).getFone(), is("teste fone")),
+                () -> assertThat(userAppPage.getContent().get(0).getSpecificID(), is("001")),
+                () -> assertNull(userAppPage.getContent().get(0).getLoanSpecificID()),
                 () -> assertThat(userAppPage.getContent().get(1).getName(), is("teste nome")),
                 () -> assertThat(userAppPage.getContent().get(1).getAge(), is(20)),
-                () -> assertThat(userAppPage.getContent().get(1).getFone(), is("teste fone"))
+                () -> assertThat(userAppPage.getContent().get(1).getFone(), is("teste fone")),
+                () -> assertThat(userAppPage.getContent().get(1).getSpecificID(), is("001")),
+                () -> assertNull(userAppPage.getContent().get(1).getLoanSpecificID())
         );
     }
 

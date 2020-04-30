@@ -19,6 +19,7 @@ import static br.com.biblioteca.bookuser.UserApp.builders.UserAppBuilder.createU
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -52,8 +53,21 @@ public class ListUserAppServiceTest {
         assertAll("UserApp",
                 () -> assertThat(result.size(), is(3)),
                 () -> assertThat(result.get(0).getName(), is("Nome Teste GET 01")),
+                () -> assertThat(result.get(0).getAge(), is(20)),
+                () -> assertThat(result.get(0).getFone(), is("teste fone")),
+                () -> assertThat(result.get(0).getSpecificID(), is("001")),
+                () -> assertNull(result.get(0).getLoanSpecificID()),
                 () -> assertThat(result.get(1).getName(), is("Nome Teste GET 02")),
-                () -> assertThat(result.get(2).getName(), is("Nome Teste GET 03"))
+                () -> assertThat(result.get(1).getAge(), is(20)),
+                () -> assertThat(result.get(1).getFone(), is("teste fone")),
+                () -> assertThat(result.get(1).getSpecificID(), is("001")),
+                () -> assertNull(result.get(1).getLoanSpecificID()),
+                () -> assertThat(result.get(2).getName(), is("Nome Teste GET 03")),
+                () -> assertThat(result.get(2).getAge(), is(20)),
+                () -> assertThat(result.get(2).getFone(), is("teste fone")),
+                () -> assertThat(result.get(2).getSpecificID(), is("001")),
+                () -> assertNull(result.get(2).getLoanSpecificID())
+
         );
     }
 }

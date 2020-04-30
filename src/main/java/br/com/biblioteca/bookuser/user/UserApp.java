@@ -35,12 +35,6 @@ public class UserApp implements Serializable {
 
     private String loanSpecificID;
 
-    public UserApp(String name, int age, String fone) {
-        this.name = name;
-        this.age = age;
-        this.fone = fone;
-    }
-
     public static UserApp to(UserAppDTO userAppDTO) {
         return UserApp
                 .builder()

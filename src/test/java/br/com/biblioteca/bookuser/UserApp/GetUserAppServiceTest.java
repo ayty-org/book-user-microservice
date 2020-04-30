@@ -18,6 +18,7 @@ import static br.com.biblioteca.bookuser.UserApp.builders.UserAppBuilder.createU
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
@@ -51,7 +52,9 @@ public class GetUserAppServiceTest {
         assertAll("UserApp",
                 () -> assertThat(result.getName(), is("Nome Teste GET")),
                 () -> assertThat(result.getAge(), is(20)),
-                () -> assertThat(result.getFone(), is("teste fone"))
+                () -> assertThat(result.getFone(), is("teste fone")),
+                () -> assertThat(result.getSpecificID(), is("001")),
+                () -> assertNull(result.getLoanSpecificID())
         );
     }
 
