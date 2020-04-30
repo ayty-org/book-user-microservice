@@ -33,7 +33,11 @@ import java.util.Collections;
 import static br.com.biblioteca.bookuser.UserApp.builders.UserAppBuilder.createUserApp;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -74,7 +78,7 @@ public class UserAppControllerTest {
     @DisplayName("Pesquisa usuário por id")
     void whenValidGetIdUserApp_thenReturnsUserApp() throws Exception {
 
-        when(getUserAppService.find(anyLong())).thenReturn(createUserApp().id(1L).build());
+        when(getUserAppService.find(anyLong())).thenReturn(createUserApp().build());
 
         mockMvc.perform(get("/v1/api/user/{id}", 1L)
                 .accept(MediaType.APPLICATION_JSON))
@@ -83,9 +87,31 @@ public class UserAppControllerTest {
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.name", is("teste nome")))
                 .andExpect(jsonPath("$.age", is(20)))
-                .andExpect(jsonPath("$.fone", is("teste fone")));
+                .andExpect(jsonPath("$.fone", is("teste fone")))
+                .andExpect(jsonPath("$.specificID", is("001")))
+                .andExpect(jsonPath("$.loanSpecificID", is(nullValue())));
 
         verify(getUserAppService).find(anyLong());
+    }
+
+    @Test
+    @DisplayName("Pesquisa usuário por specific id")
+    void whenValidGetSpecificIdUserApp_thenReturnsUserApp() throws Exception {
+
+        when(getSpecificIdUserAppService.findBySpecificID(anyString())).thenReturn(createUserApp().build());
+
+        mockMvc.perform(get("/v1/api/user/getUserSpecificId/{id}", "001")
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.name", is("teste nome")))
+                .andExpect(jsonPath("$.age", is(20)))
+                .andExpect(jsonPath("$.fone", is("teste fone")))
+                .andExpect(jsonPath("$.specificID", is("001")))
+                .andExpect(jsonPath("$.loanSpecificID", is(nullValue())));
+
+        verify(getSpecificIdUserAppService).findBySpecificID(anyString());
     }
 
     @Test
@@ -103,12 +129,16 @@ public class UserAppControllerTest {
                 .andExpect(jsonPath("$[*]", hasSize(2)))
                 .andExpect(jsonPath("$[0].id", is(1)))
                 .andExpect(jsonPath("$[0].name", is("teste nome")))
-                .andExpect(jsonPath("[0].age", is(20)))
+                .andExpect(jsonPath("$[0].age", is(20)))
                 .andExpect(jsonPath("$[0].fone", is("teste fone")))
+                .andExpect(jsonPath("$[0].specificID", is("001")))
+                .andExpect(jsonPath("$[0].loanSpecificID", is(nullValue())))
                 .andExpect(jsonPath("$[1].id", is(2)))
                 .andExpect(jsonPath("$[1].name", is("teste nome")))
                 .andExpect(jsonPath("$[1].age", is(20)))
-                .andExpect(jsonPath("$[1].fone", is("teste fone")));
+                .andExpect(jsonPath("$[1].fone", is("teste fone")))
+                .andExpect(jsonPath("$[1].specificID", is("001")))
+                .andExpect(jsonPath("$[1].loanSpecificID", is(nullValue())));;
 
         verify(listUserAppService).findAll();
     }
@@ -131,7 +161,9 @@ public class UserAppControllerTest {
                 .andExpect(jsonPath("$.content[0].id", is(1)))
                 .andExpect(jsonPath("$.content[0].name", is("teste nome")))
                 .andExpect(jsonPath("$.content[0].age", is(20)))
-                .andExpect(jsonPath("$.content[0].fone", is("teste fone")));
+                .andExpect(jsonPath("$.content[0].fone", is("teste fone")))
+                .andExpect(jsonPath("$.content[0].specificID", is("001")))
+                .andExpect(jsonPath("$.content[0].loanSpecificID", is(nullValue())));;
 
         verify(listPageUserAppService).findPage(pageable);
     }
@@ -145,19 +177,31 @@ public class UserAppControllerTest {
                 .andDo(print())
                 .andExpect(status().isCreated());
 
-        //verify(saveUserAppService).insert(createUserApp().build());
+        verify(saveUserAppService).insert(any(UserApp.class));
     }
 
     @Test
     @DisplayName("Edita um usuário")
-    void whenValidUpdateUserApp_thenReturnsUserApp() throws Exception { //edita UserApp
+    void whenValidUpdateUserApp_thenReturnsUserApp() throws Exception {
         mockMvc.perform(put("/v1/api/user/{id}", 1L)
                 .content(readJson("userUpdate.json"))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
-        //verify(updateUserAppService).update(createUserApp().build(), 1L);
+        verify(updateUserAppService).update(any(UserApp.class), eq(1L));
+    }
+
+    @Test
+    @DisplayName("Edita specific id de loan em usuário")
+    void whenValidUpdateUserAppSpecificIdLoan_thenReturnsUserApp() throws Exception {
+        mockMvc.perform(put("/v1/api/user/updateLoanSpecificId/{id}", "001")
+                .content(readJson("updateLoanSpecificIdUserApp.json"))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+
+        verify(updateUserAppSpecificIdLoanService).update(anyString(), eq("001"));
     }
 
     @Test

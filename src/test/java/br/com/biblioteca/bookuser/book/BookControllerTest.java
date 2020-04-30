@@ -81,8 +81,6 @@ public class BookControllerTest {
     private ListBookSpecificIdService listBookSpecificIdService;
     @MockBean
     private UpdateStatusBookService updateStatusBookService;
-    @MockBean
-    private BookRepository bookRepository;
 
     @Test
     @DisplayName("Pesquisa livro por id")
