@@ -62,7 +62,7 @@ public class UpdateBookServiceTest {
     @DisplayName("Deve lançar exceção quando o livro não for encontrado")
     void shouldThrowBookNotFoundException() {
         when(bookRepository.findById(anyLong())).thenReturn(Optional.empty());
-        assertThrows(BookNotFoundException.class, () -> this.updateBook.update(createUserApp().build(),1L));
+        assertThrows(BookNotFoundException.class, () -> this.updateBook.update(createUserApp().build(), 1L));
     }
 }
 

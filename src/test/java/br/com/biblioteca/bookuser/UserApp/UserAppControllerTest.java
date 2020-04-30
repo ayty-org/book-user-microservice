@@ -138,7 +138,8 @@ public class UserAppControllerTest {
                 .andExpect(jsonPath("$[1].age", is(20)))
                 .andExpect(jsonPath("$[1].fone", is("teste fone")))
                 .andExpect(jsonPath("$[1].specificID", is("001")))
-                .andExpect(jsonPath("$[1].loanSpecificID", is(nullValue())));;
+                .andExpect(jsonPath("$[1].loanSpecificID", is(nullValue())));
+        ;
 
         verify(listUserAppService).findAll();
     }
@@ -163,7 +164,8 @@ public class UserAppControllerTest {
                 .andExpect(jsonPath("$.content[0].age", is(20)))
                 .andExpect(jsonPath("$.content[0].fone", is("teste fone")))
                 .andExpect(jsonPath("$.content[0].specificID", is("001")))
-                .andExpect(jsonPath("$.content[0].loanSpecificID", is(nullValue())));;
+                .andExpect(jsonPath("$.content[0].loanSpecificID", is(nullValue())));
+        ;
 
         verify(listPageUserAppService).findPage(pageable);
     }

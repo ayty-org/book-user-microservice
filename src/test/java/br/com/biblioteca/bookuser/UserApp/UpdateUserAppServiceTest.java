@@ -67,7 +67,7 @@ public class UpdateUserAppServiceTest {
     @DisplayName("Deve lançar exceção quando o UserApp não for encontrado")
     void shouldThrowUserAppNotFoundException() {
         when(userAppRepository.findById(anyLong())).thenReturn(Optional.empty());
-        assertThrows(UserAppNotFoundException.class, () -> this.updateUserApp.update(UserApp.builder().build(),1L));
+        assertThrows(UserAppNotFoundException.class, () -> this.updateUserApp.update(UserApp.builder().build(), 1L));
     }
 }
 

@@ -71,6 +71,6 @@ public class UpdateUserAppSpecificIdLoanServiceTest {
     @DisplayName("Deve lançar exceção quando o UserApp não for encontrado")
     void shouldThrowUserAppNotFoundException() {
         when(userAppRepository.findBySpecificID(anyString())).thenReturn(Optional.empty());
-        assertThrows(UserAppNotFoundException.class, () -> this.updateUserApp.update("001","001"));
+        assertThrows(UserAppNotFoundException.class, () -> this.updateUserApp.update("001", "001"));
     }
 }

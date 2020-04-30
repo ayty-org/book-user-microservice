@@ -68,6 +68,6 @@ public class UpdateBookSpecificIdLoanServiceTest {
     @DisplayName("Deve lançar exceção quando o livro não for encontrado ao tentar atualizar o specificic id de loan no livro")
     void shouldThrowBookNotFoundException() {
         when(bookRepository.findBySpecificID(anyString())).thenReturn(Optional.empty());
-        assertThrows(BookNotFoundException.class, () -> this.updateBookSpecificIdLoanServiceBook.updateSpecificId(anyString(),"001"));
+        assertThrows(BookNotFoundException.class, () -> this.updateBookSpecificIdLoanServiceBook.updateSpecificId(anyString(), "001"));
     }
 }

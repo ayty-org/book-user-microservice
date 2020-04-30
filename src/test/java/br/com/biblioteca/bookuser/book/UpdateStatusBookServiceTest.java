@@ -69,6 +69,6 @@ public class UpdateStatusBookServiceTest {
     @DisplayName("Deve lançar exceção quando o livro não for encontrado ao tentar atualizar o specificic id de loan no livro")
     void shouldThrowBookNotFoundException() {
         when(bookRepository.findBySpecificID(anyString())).thenReturn(Optional.empty());
-        assertThrows(BookNotAvailableException.class, () -> this.updateStatusBookService.updateStatusBook(anyBoolean(),"001"));
+        assertThrows(BookNotAvailableException.class, () -> this.updateStatusBookService.updateStatusBook(anyBoolean(), "001"));
     }
 }
