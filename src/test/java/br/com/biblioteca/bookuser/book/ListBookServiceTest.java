@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static br.com.biblioteca.bookuser.book.builders.BookBuilder.createBook;
+import static br.com.biblioteca.bookuser.book.builders.BookBuilder.createUserApp;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -39,9 +39,9 @@ public class ListBookServiceTest {
     void shouldFindAllBook() { // testando buscar livro por id
 
         when(bookRepository.findAll()).thenReturn(
-                Stream.of(createBook().author("Author Teste GET 01").build(),
-                        createBook().author("Author Teste GET 02").build(),
-                        createBook().author("Author Teste GET 03").build()).collect(Collectors.toList())
+                Stream.of(createUserApp().author("Author Teste GET 01").build(),
+                        createUserApp().author("Author Teste GET 02").build(),
+                        createUserApp().author("Author Teste GET 03").build()).collect(Collectors.toList())
         );
 
         List<Book> result = this.findAllBook.findAll();

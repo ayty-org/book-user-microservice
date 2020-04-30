@@ -10,7 +10,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static br.com.biblioteca.bookuser.book.builders.BookBuilder.createBook;
+import static br.com.biblioteca.bookuser.book.builders.BookBuilder.createUserApp;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -37,7 +37,7 @@ public class SaveBookServiceTest {
     void shouldSaveBook() { //testando save book
 
         //execução
-        saveBook.insert(createBook().build());
+        saveBook.insert(createUserApp().build());
 
         //preparação
         ArgumentCaptor<Book> captorBook = ArgumentCaptor.forClass(Book.class);

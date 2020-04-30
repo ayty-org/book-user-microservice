@@ -1,9 +1,7 @@
 package br.com.biblioteca.bookuser.book;
 
-import br.com.biblioteca.bookuser.book.services.UpdateBookSpecificIdLoanServiceImpl;
 import br.com.biblioteca.bookuser.book.services.UpdateStatusBookServiceImpl;
 import br.com.biblioteca.bookuser.exceptions.BookNotAvailableException;
-import br.com.biblioteca.bookuser.exceptions.BookNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -16,7 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
 import java.util.Optional;
 
-import static br.com.biblioteca.bookuser.book.builders.BookBuilder.createBook;
+import static br.com.biblioteca.bookuser.book.builders.BookBuilder.createUserApp;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -45,7 +43,7 @@ public class UpdateStatusBookServiceTest {
     @DisplayName("Deve atualizar o loan specific id do livro")
     void shouldUpdateBook() {
 
-        when(bookRepository.findBySpecificID(anyString())).thenReturn(Optional.of(createBook().id(1L).loanSpecificID("001").build()));
+        when(bookRepository.findBySpecificID(anyString())).thenReturn(Optional.of(createUserApp().id(1L).loanSpecificID("001").build()));
 
         updateStatusBookService.updateStatusBook(false, "001");
 

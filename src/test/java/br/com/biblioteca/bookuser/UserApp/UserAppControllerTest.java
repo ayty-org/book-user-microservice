@@ -1,7 +1,6 @@
 package br.com.biblioteca.bookuser.UserApp;
 
 import br.com.biblioteca.bookuser.user.UserApp;
-import br.com.biblioteca.bookuser.user.UserAppDTO;
 import br.com.biblioteca.bookuser.user.services.DeleteUserAppService;
 import br.com.biblioteca.bookuser.user.services.GetSpecificIdUserAppService;
 import br.com.biblioteca.bookuser.user.services.GetUserAppService;
@@ -9,7 +8,7 @@ import br.com.biblioteca.bookuser.user.services.ListPageUserAppService;
 import br.com.biblioteca.bookuser.user.services.ListUserAppService;
 import br.com.biblioteca.bookuser.user.services.SaveUserAppService;
 import br.com.biblioteca.bookuser.user.services.UpdateUserAppService;
-import br.com.biblioteca.bookuser.user.services.UpdateUserAppSpecificIdLoan;
+import br.com.biblioteca.bookuser.user.services.UpdateUserAppSpecificIdLoanService;
 import br.com.biblioteca.bookuser.user.v1.UserAppControllerV1;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.DisplayName;
@@ -69,7 +68,7 @@ public class UserAppControllerTest {
     @MockBean
     private GetSpecificIdUserAppService getSpecificIdUserAppService;
     @MockBean
-    private UpdateUserAppSpecificIdLoan updateUserAppSpecificIdLoan;
+    private UpdateUserAppSpecificIdLoanService updateUserAppSpecificIdLoanService;
 
     @Test
     @DisplayName("Pesquisa usuário por id")

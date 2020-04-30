@@ -13,7 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static br.com.biblioteca.bookuser.book.builders.BookBuilder.createBook;
+import static br.com.biblioteca.bookuser.book.builders.BookBuilder.createUserApp;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -41,9 +41,9 @@ public class UpdateBookServiceTest {
     @DisplayName("Deve atualizar um livro")
     void shouldUpdateBook() { // testando atualizar livro
 
-        when(bookRepository.findById(anyLong())).thenReturn(Optional.of(createBook().id(1L).build()));
+        when(bookRepository.findById(anyLong())).thenReturn(Optional.of(createUserApp().id(1L).build()));
 
-        updateBook.update(createBook().author("teste update").build(), 1L);
+        updateBook.update(createUserApp().author("teste update").build(), 1L);
 
         ArgumentCaptor<Book> captorBook = ArgumentCaptor.forClass(Book.class);
         verify(bookRepository).save(captorBook.capture());
@@ -62,7 +62,7 @@ public class UpdateBookServiceTest {
     @DisplayName("Deve lançar exceção quando o livro não for encontrado")
     void shouldThrowBookNotFoundException() {
         when(bookRepository.findById(anyLong())).thenReturn(Optional.empty());
-        assertThrows(BookNotFoundException.class, () -> this.updateBook.update(createBook().build(),1L));
+        assertThrows(BookNotFoundException.class, () -> this.updateBook.update(createUserApp().build(),1L));
     }
 }
 

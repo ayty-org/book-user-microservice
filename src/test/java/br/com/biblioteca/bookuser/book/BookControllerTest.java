@@ -11,6 +11,7 @@ import br.com.biblioteca.bookuser.book.services.UpdateBookService;
 import br.com.biblioteca.bookuser.book.services.UpdateBookSpecificIdLoanService;
 import br.com.biblioteca.bookuser.book.services.UpdateStatusBookService;
 import br.com.biblioteca.bookuser.book.v1.BookControllerV1;
+import br.com.biblioteca.bookuser.exceptions.BookNotFoundException;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -29,10 +30,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.util.Collections;
 
-import static br.com.biblioteca.bookuser.book.builders.BookBuilder.createBook;
+import static br.com.biblioteca.bookuser.book.builders.BookBuilder.createUserApp;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
@@ -41,6 +41,7 @@ import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -80,12 +81,14 @@ public class BookControllerTest {
     private ListBookSpecificIdService listBookSpecificIdService;
     @MockBean
     private UpdateStatusBookService updateStatusBookService;
+    @MockBean
+    private BookRepository bookRepository;
 
     @Test
     @DisplayName("Pesquisa livro por id")
     void whenValidGetIdBook_thenReturnsBook() throws Exception {
 
-        when(getBookService.find(anyLong())).thenReturn(createBook().build());
+        when(getBookService.find(anyLong())).thenReturn(createUserApp().build());
 
         mockMvc.perform(get("/v1/api/book/{id}", 1L)
                 .accept(MediaType.APPLICATION_JSON))
@@ -105,11 +108,24 @@ public class BookControllerTest {
     }
 
     @Test
+    @DisplayName("lança exeção quando livro não for achado")
+    void whenValidExeceptionGetIdBookBook_thenThrow400() throws Exception {
+        when(getBookService.find(anyLong())).thenThrow(new BookNotFoundException());
+
+        mockMvc.perform(get("/v1/api/book/{id}", 1L)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+
+        verify(getBookService).find(anyLong());
+    }
+
+    @Test
     @DisplayName("Pesquisa todos os livros")
     void whenValidListBook_thenReturnsBook() throws Exception {
 
         when(listBookService.findAll()).thenReturn(Lists.newArrayList(
-                createBook().id(1L).build(), createBook().id(2L).specificID("002").build()
+                createUserApp().id(1L).build(), createUserApp().id(2L).specificID("002").build()
         ));
 
         mockMvc.perform(get("/v1/api/book")
@@ -143,7 +159,7 @@ public class BookControllerTest {
     @DisplayName("Pesquisa todos os livros com paginação")
     void whenValidListPageBook_thenReturnsBookPage() throws Exception {
 
-        Page<Book> bookPage = new PageImpl<>(Collections.singletonList(createBook().id(1L).build()));
+        Page<Book> bookPage = new PageImpl<>(Collections.singletonList(createUserApp().id(1L).build()));
 
         Pageable pageable = PageRequest.of(0, 2);
 
@@ -171,7 +187,7 @@ public class BookControllerTest {
     void whenValidGetSpecificIdBook_thenReturnsBook() throws Exception {
 
         when(getSpecificIdBookService.findBySpecificID(anyString())).thenReturn(
-                createBook().specificID("001").loanSpecificID("001").build());
+                createUserApp().specificID("001").loanSpecificID("001").build());
 
         mockMvc.perform(get("/v1/api/book/getBookSpecificId/{id}", "001")
                 .accept(MediaType.APPLICATION_JSON))
@@ -191,12 +207,27 @@ public class BookControllerTest {
     }
 
     @Test
+    @DisplayName("lança exeção quando livro não for achado, pesquisando por seu specific id")
+    void whenValidExceptionGetSpecificIdBook_thenThrow400() throws Exception {
+
+        when(getSpecificIdBookService.findBySpecificID(anyString())).thenThrow(new BookNotFoundException());
+
+        mockMvc.perform(get("/v1/api/book/getBookSpecificId/{id}", "001")
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+
+        verify(getSpecificIdBookService).findBySpecificID(anyString());
+    }
+
+
+        @Test
     @DisplayName("Pesquisa todos os livros por seu specific id")
     void whenValidListSpecificIdBook_thenReturnsBook() throws Exception {
 
         when(listBookSpecificIdService.findAllSpecificId(anyString())).thenReturn(Lists.newArrayList(
-                createBook().id(1L).build(),
-                createBook().id(2L).build()
+                createUserApp().id(1L).build(),
+                createUserApp().id(2L).build()
         ));
 
         mockMvc.perform(get("/v1/api/book/getAllLoanSpecificId/{id}","001")

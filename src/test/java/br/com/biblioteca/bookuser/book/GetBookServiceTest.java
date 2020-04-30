@@ -13,7 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
 import java.util.Optional;
 
-import static br.com.biblioteca.bookuser.book.builders.BookBuilder.createBook;
+import static br.com.biblioteca.bookuser.book.builders.BookBuilder.createUserApp;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -42,7 +42,7 @@ public class GetBookServiceTest {
     void shouldFindByIdBook() { // testando buscar livro por id
 
         when(bookRepository.findById(anyLong())).thenReturn(
-                Optional.of(createBook().id(1L).author("Author Teste GET").build())
+                Optional.of(createUserApp().id(1L).author("Author Teste GET").build())
         );
 
         Book result = this.findBook.find(1L);

@@ -15,7 +15,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.Collections;
 
-import static br.com.biblioteca.bookuser.book.builders.BookBuilder.createBook;
+import static br.com.biblioteca.bookuser.book.builders.BookBuilder.createUserApp;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -42,7 +42,7 @@ public class ListPageBookServiceTest {
 
         Pageable pageable = PageRequest.of(0, 2);
 
-        when(listPageBook.findPage(pageable)).thenReturn(new PageImpl<>(Collections.nCopies(2, createBook().build())));
+        when(listPageBook.findPage(pageable)).thenReturn(new PageImpl<>(Collections.nCopies(2, createUserApp().build())));
 
         Page<Book> userAppPage = listPageBook.findPage(pageable);
 

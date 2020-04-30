@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 public class BookBuilder {
 
-    public static Book.Builder createBook() {
+    public static Book.Builder createUserApp() {
         return Book
                 .builder()
                 .id(1L)

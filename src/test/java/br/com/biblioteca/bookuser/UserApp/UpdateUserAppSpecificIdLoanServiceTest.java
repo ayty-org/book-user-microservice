@@ -4,6 +4,7 @@ import br.com.biblioteca.bookuser.exceptions.UserAppNotFoundException;
 import br.com.biblioteca.bookuser.user.UserApp;
 import br.com.biblioteca.bookuser.user.UserAppRepository;
 import br.com.biblioteca.bookuser.user.services.UpdateUserAppServiceImpl;
+import br.com.biblioteca.bookuser.user.services.UpdateUserAppSpecificIdLoanServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -19,34 +20,37 @@ import static br.com.biblioteca.bookuser.UserApp.builders.UserAppBuilder.createU
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @Tag("service")
 @DisplayName("Valida funcionalidade do serviço responsável por atualizar UserApp")
-public class UpdateUserAppServiceTest {
+public class UpdateUserAppSpecificIdLoanServiceTest {
 
     @Mock
     private UserAppRepository userAppRepository;
 
     @Mock
-    private UpdateUserAppServiceImpl updateUserApp;
+    private UpdateUserAppSpecificIdLoanServiceImpl updateUserApp;
 
     @BeforeEach
     public void setUp() {
-        this.updateUserApp = new UpdateUserAppServiceImpl(userAppRepository);
+        this.updateUserApp = new UpdateUserAppSpecificIdLoanServiceImpl(userAppRepository);
     }
 
     @Test
     @DisplayName("Deve atualizar um usuário")
     void shouldUpdateUserApp() {
 
-        when(userAppRepository.findById(anyLong())).thenReturn(Optional.of(createUserApp().id(1L).build()));
+        when(userAppRepository.findBySpecificID(anyString())).thenReturn(
+                Optional.of(createUserApp().build()));
 
-        updateUserApp.update(createUserApp().name("teste update").build(), 1L);
+        updateUserApp.update("001", "001");
 
         ArgumentCaptor<UserApp> captorUser = ArgumentCaptor.forClass(UserApp.class);
         verify(userAppRepository).save(captorUser.capture());
@@ -54,17 +58,19 @@ public class UpdateUserAppServiceTest {
         UserApp result = captorUser.getValue();
 
         assertAll("UserApp",
-                () -> assertThat(result.getName(), is("teste update")),
+                () -> assertThat(result.getId(), is(1L)),
+                () -> assertThat(result.getName(), is("teste nome")),
                 () -> assertThat(result.getAge(), is(20)),
-                () -> assertThat(result.getFone(), is("teste fone"))
+                () -> assertThat(result.getFone(), is("teste fone")),
+                () -> assertThat(result.getSpecificID(), is("001")),
+                () -> assertThat(result.getLoanSpecificID(), is("001"))
         );
     }
 
     @Test
     @DisplayName("Deve lançar exceção quando o UserApp não for encontrado")
     void shouldThrowUserAppNotFoundException() {
-        when(userAppRepository.findById(anyLong())).thenReturn(Optional.empty());
-        assertThrows(UserAppNotFoundException.class, () -> this.updateUserApp.update(UserApp.builder().build(),1L));
+        when(userAppRepository.findBySpecificID(anyString())).thenReturn(Optional.empty());
+        assertThrows(UserAppNotFoundException.class, () -> this.updateUserApp.update("001","001"));
     }
 }
-

@@ -14,7 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
 import java.util.Optional;
 
-import static br.com.biblioteca.bookuser.book.builders.BookBuilder.createBook;
+import static br.com.biblioteca.bookuser.book.builders.BookBuilder.createUserApp;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -43,7 +43,7 @@ public class GetSpecificIdBookServiceTest {
     void shouldFindByIdBook() {
 
         when(bookRepository.findBySpecificID(anyString())).thenReturn(
-                Optional.of(createBook().status(false).build())
+                Optional.of(createUserApp().status(false).build())
         );
 
         Book result = this.findBook.findBySpecificID("001");
@@ -72,7 +72,7 @@ public class GetSpecificIdBookServiceTest {
     @Test
     @DisplayName("Deve lançar exceção quando o livro não estiver disponivel para emprestimos")
     void shouldThrowBookNotAvailableException() {
-        when(bookRepository.findBySpecificID(anyString())).thenReturn(Optional.of(createBook().build()));
+        when(bookRepository.findBySpecificID(anyString())).thenReturn(Optional.of(createUserApp().build()));
         assertThrows(BookNotAvailableException.class, () -> this.findBook.findBySpecificID("001"));
     }
 

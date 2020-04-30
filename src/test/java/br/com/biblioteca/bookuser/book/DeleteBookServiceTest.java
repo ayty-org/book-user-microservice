@@ -13,7 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static br.com.biblioteca.bookuser.book.builders.BookBuilder.createBook;
+import static br.com.biblioteca.bookuser.book.builders.BookBuilder.createUserApp;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.lenient;
@@ -54,7 +54,7 @@ public class DeleteBookServiceTest {
     @DisplayName("Deve lançar exceção quando o livro tiver sido emprestado")
     void shouldThrowBookIntegrityException() {
         when(bookRepository.existsById(anyLong())).thenReturn(true);
-        when(bookRepository.findById(anyLong())).thenReturn(Optional.of(createBook().loanSpecificID("002").build()));
+        when(bookRepository.findById(anyLong())).thenReturn(Optional.of(createUserApp().loanSpecificID("002").build()));
         assertThrows(BookIntegrityException.class, () -> this.deleteBook.delete(2L));
     }
 }

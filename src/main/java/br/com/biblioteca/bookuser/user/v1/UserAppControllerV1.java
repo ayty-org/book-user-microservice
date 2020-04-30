@@ -1,6 +1,5 @@
 package br.com.biblioteca.bookuser.user.v1;
 
-import br.com.biblioteca.bookuser.user.LoanUserAppSpecificIdDTO;
 import br.com.biblioteca.bookuser.user.UserApp;
 import br.com.biblioteca.bookuser.user.UserAppDTO;
 import br.com.biblioteca.bookuser.user.services.DeleteUserAppService;
@@ -10,7 +9,7 @@ import br.com.biblioteca.bookuser.user.services.ListPageUserAppService;
 import br.com.biblioteca.bookuser.user.services.ListUserAppService;
 import br.com.biblioteca.bookuser.user.services.SaveUserAppService;
 import br.com.biblioteca.bookuser.user.services.UpdateUserAppService;
-import br.com.biblioteca.bookuser.user.services.UpdateUserAppSpecificIdLoan;
+import br.com.biblioteca.bookuser.user.services.UpdateUserAppSpecificIdLoanService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,7 +39,7 @@ public class UserAppControllerV1 {
     private final UpdateUserAppService updateUserAppService;
     private final DeleteUserAppService deleteUserAppService;
     private final GetSpecificIdUserAppService getSpecificIdUserAppService;
-    private final UpdateUserAppSpecificIdLoan updateUserAppSpecificIdLoan;
+    private final UpdateUserAppSpecificIdLoanService updateUserAppSpecificIdLoanService;
 
     @GetMapping(value = "/{id}") //lista usuário por id
     public UserAppDTO find(@PathVariable Long id) {
@@ -76,8 +75,8 @@ public class UserAppControllerV1 {
 
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     @PutMapping(value = "/updateLoanSpecificId/{id}") //atualiza variavel loan em usuário
-    public void update(@Valid @PathVariable String id, @RequestBody LoanUserAppSpecificIdDTO loanUserAppSpecificIdDTO) {
-        updateUserAppSpecificIdLoan.update(loanUserAppSpecificIdDTO, id);
+    public void update(@Valid @PathVariable String id, @RequestBody String loanUserAppSpecificIdDTO) {
+        updateUserAppSpecificIdLoanService.update(loanUserAppSpecificIdDTO, id);
     }
 
     @ResponseStatus(code = HttpStatus.NO_CONTENT)

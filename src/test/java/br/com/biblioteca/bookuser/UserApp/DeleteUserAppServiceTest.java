@@ -1,5 +1,8 @@
 package br.com.biblioteca.bookuser.UserApp;
 
+import br.com.biblioteca.bookuser.UserApp.builders.UserAppBuilder;
+import br.com.biblioteca.bookuser.exceptions.BookIntegrityException;
+import br.com.biblioteca.bookuser.exceptions.UserAppIntegrityException;
 import br.com.biblioteca.bookuser.exceptions.UserAppNotDeletedException;
 import br.com.biblioteca.bookuser.user.UserAppRepository;
 import br.com.biblioteca.bookuser.user.services.DeleteUserAppServiceImpl;
@@ -13,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
+import static br.com.biblioteca.bookuser.book.builders.BookBuilder.createUserApp;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.lenient;
@@ -47,5 +51,15 @@ public class DeleteUserAppServiceTest {
     void shouldThrowUserAppNotDeletedException() {
         lenient().when(userAppRepository.findById(anyLong())).thenReturn(Optional.empty());
         assertThrows(UserAppNotDeletedException.class, () -> this.deleteUserApp.delete(1L));
+    }
+
+    @Test
+    @DisplayName("Deve lançar exceção quando o usuário tiver emprestimos")
+    void shouldThrowUserAppIntegrityException() {
+        when(userAppRepository.existsById(anyLong())).thenReturn(true);
+        when(userAppRepository.findById(anyLong())).thenReturn(
+                Optional.of(UserAppBuilder.createUserApp().loanSpecificID("002").build())
+        );
+        assertThrows(UserAppIntegrityException.class, () -> this.deleteUserApp.delete(2L));
     }
 }
