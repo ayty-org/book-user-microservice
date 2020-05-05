@@ -1,13 +1,11 @@
 #informações da api
 swagger: "2.0"
 info:
-  description: "Essa versão pode fornecer dados puros nos formatos JSON e tenta aderir à arquitetura REST o máximo
-            possível. Nesta página, você pode conhecer e experimentar os URLs para acessar os dados, os parâmetros
-            da sequência de consultas que podem ser aplicados para filtrar e selecionar resultados e as estruturas
-            de dados retornadas. Por padrão, todos os serviços de listagem retornam 24 itens.\n
-            ATENÇÃO: Esta versão ainda está incompleta, sujeita a alterações."
+  description: "Esta versão é um microservice do sistema de biblioteca, o qual fornecer dados puros nos formatos JSON de usuários e livros. Ele tenta aderir à arquitetura REST o máximo, nesta página, você pode conhecer e experimentar as URLs para acessar os dados, os parâmetros
+    da sequência de consultas que podem ser aplicados para filtrar e selecionar resultados e as estruturas de dados retornadas.\n
+    ATENÇÃO: Esta versão ainda está incompleta, sujeita a alterações."
   version: "1.0.0"
-  title: "Api-biblioteca"
+  title: "Book-User: biblioteca"
   contact:
     email: "waldir.sousa@phoebustecnologia.com.br"
   license:
@@ -21,47 +19,18 @@ tags:
 
 schemes:
   - "http"
-  - "https"
 
 paths:
-  /v1/api/book: #Endpoint para livros
-    post: #adicionar um novo livro
+  /v1/api/book/{id}:
+    get:  #Buscar livro por id
       tags:
         - "book-controller"
-      summary: "Adicionar novo livro a biblioteca"
-      description: "Endpoint que adiciona um novo objeto Book no banco de dados."
-      operationId: "insertBook"
-      consumes:
-        - "application/json"
+      summary: "Buscar livro por id"
+      description: "Busca livro no Banco por seu id"
+      operationId: "findIdBook"
       produces:
         - "application/json"
-      parameters:
-        - in: "body"
-          name: "objDTO"
-          description: "Parametros necessarios para adicionar livro em biblioteca."
-          required: true
-          schema:
-            $ref: "#/definitions/Book"
-      responses:
-        201:
-          description: "Created"
-        401:
-          description: "Unauthorized"
-        403:
-          description: "Forbidden"
-        404:
-          description: "Not Found"
 
-    put: #atualizar um livro
-      tags:
-        - "book-controller"
-      summary: "Atualizar livro"
-      description: "Endpoint que atualiza um objeto Book no banco de dados."
-      operationId: "updateBook"
-      consumes:
-        - "application/json"
-      produces:
-        - "application/json"
       parameters:
         - name: "id"
           in: "path"
@@ -69,21 +38,95 @@ paths:
           type: "integer"
           format: "int64"
 
-        - in: body
-          name: "objDTO"
-          description: "Parametros necessarios para atualizar livro em biblioteca."
-          required: true
-          schema:
-            $ref: "#/definitions/Book"
       responses:
-        400:
-          description: "Invalid ID supplied"
+        200:
+          description: "successful operation"
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
         404:
-          description: "Book not found"
-        405:
-          description: "Validation exception"
+          description: "Not Found"
 
-    get:  #buscar todos os livros
+  /v1/api/book/getBookSpecificId/{id}:
+    get:  #Buscar livro por id
+      tags:
+        - "book-controller"
+      summary: "Buscar livro por specific id"
+      description: "Busca livro no Banco por seu specific id"
+      operationId: "findSpecificIdBook"
+      produces:
+        - "application/json"
+
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "string"
+
+      responses:
+        200:
+          description: "successful operation"
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+        404:
+          description: "Not Found"
+
+  /v1/api/book/getAllBookSpecificId/{id}:
+    get:  #Buscar livro por id
+      tags:
+        - "book-controller"
+      summary: "Busca todos os livro por specific id de emprestimo"
+      description: "Busca todos os livros no Banco que tem o mesmo specific id de um emprestimo"
+      operationId: "findSpecificIdLoanBook"
+      produces:
+        - "application/json"
+
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "string"
+
+      responses:
+        200:
+          description: "successful operation"
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+        404:
+          description: "Not Found"
+
+  /v1/api/book/page:
+    get: #buscar todos os livros com paginação
+      tags:
+        - "book-controller"
+      summary: "Buscar todos os livros com paginação"
+      description: "Retorna page e size que são informados na requisição. Caso não padas, retorna os valores defult"
+      operationId: "findBookPage"
+      produces:
+        - "application/json"
+
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Book"
+
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+        404:
+          description: "Not Found"
+
+  /v1/api/book:
+    get: #buscar todos os livros
       tags:
         - "book-controller"
       summary: "Buscar todos os livros"
@@ -106,11 +149,38 @@ paths:
         404:
           description: "Not Found"
 
+    post: #adicionar um novo livro
+      tags:
+        - "book-controller"
+      summary: "Adicionar livro"
+      description: "Endpoint que adiciona um novo objeto Book no banco de dados."
+      operationId: "insertBook"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "BookDTO"
+          description: "Parametros necessarios para adicionar livro em biblioteca."
+          required: true
+          schema:
+            $ref: "#/definitions/Book"
+      responses:
+        201:
+          description: "Created"
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+        404:
+          description: "Not Found"
+
     delete: #Deletar livros
       tags:
         - "book-controller"
       summary: "Deletar livros"
-      description: ""
+      description: "Deleta book pesquisando por seu id"
       operationId: "deleteBook"
       produces:
         - "application/json"
@@ -127,7 +197,204 @@ paths:
         404:
           description: "Book not found"
 
+    put: #atualizar um livro
+      tags:
+        - "book-controller"
+      summary: "Atualizar livro"
+      description: "Endpoint que atualiza um objeto Book no banco de dados."
+      operationId: "updateBook"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "integer"
+          format: "int64"
+
+        - in: body
+          name: "BookDTO"
+          description: "Parametros necessarios para atualizar livro em biblioteca."
+          required: true
+          schema:
+            $ref: "#/definitions/Book"
+      responses:
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Book not found"
+        405:
+          description: "Validation exception"
+
+  /v1/api/book/updateStatusBook/{id}:
+    put: #atualizar status de um livro
+      tags:
+        - "book-controller"
+      summary: "Atualizar status de um livro"
+      description: "Endpoint que atualiza o status de emprestimo de um Book no banco de dados."
+      operationId: "updateStatusBook"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "string"
+
+        - in: body
+          name: "BookDTO"
+          description: "Parametros necessarios para atualizar livro em biblioteca."
+          required: true
+          schema:
+            $ref: "#/definitions/BookStatus"
+      responses:
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Book not found"
+        405:
+          description: "Validation exception"
+
+  /v1/api/book/updateLoanSpecificId/{id}:
+    put: #atualizar um livro
+      tags:
+        - "book-controller"
+      summary: "Atualizar specific id de emprestimos em livros"
+      description: "Endpoint que atualiza o specific id de loan na tabela de book no banco de dados."
+      operationId: "updateSpecificId"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "string"
+
+        - in: body
+          name: "BookDTO"
+          description: "Parametros necessarios para atualizar livro em biblioteca."
+          required: true
+          schema:
+            $ref: "#/definitions/BookLoanSpecificID"
+      responses:
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Book not found"
+        405:
+          description: "Validation exception"
+
+
+
+  /v1/api/user/{id}:
+    get:  #buscar todos os usuários
+      tags:
+        - "user-controller"
+      summary: "Buscar usuários por id"
+      description: "Retorna User por id do Banco de dados"
+      operationId: "findIdUser"
+      produces:
+        - "application/json"
+
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "integer"
+          format: "int64"
+
+      responses:
+        200:
+          description: "successful operation"
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+        404:
+          description: "Not Found"
+
+  /v1/api/user/page:
+    get:
+      tags:
+        - "user-controller"
+      summary: "Buscar todos os usuários com paginação"
+      description: "Retorna page e size que são informados na requisição. Caso não padas, retorna os valores defult"
+      operationId: "findUserPage"
+      produces:
+        - "application/json"
+
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/User"
+
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+        404:
+          description: "Not Found"
+
+  /v1/api/user/getUserSpecificId/{id}:
+    get:
+      tags:
+        - "user-controller"
+      summary: "Buscar usuário por specific id"
+      description: "Busca usuário no Banco por seu specific id"
+      operationId: "findSpecificIdUser"
+      produces:
+        - "application/json"
+
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "string"
+
+      responses:
+        200:
+          description: "successful operation"
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+        404:
+          description: "Not Found"
+
+
   /v1/api/user: #Endpoint para usuários
+
+    get:  #buscar todos os usuários
+      tags:
+        - "user-controller"
+      summary: "Buscar todos os usuários"
+      description: "retorna todos os usuários"
+      operationId: "findAllUser"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/User"
+        401:
+          description: "Unauthorized"
+        403:
+          description: "Forbidden"
+        404:
+          description: "Not Found"
+
     post:
       tags:
         - "user-controller"
@@ -154,6 +421,27 @@ paths:
           description: "Forbidden"
         404:
           description: "Not Found"
+
+    delete: #Deletar usuário
+      tags:
+        - "user-controller"
+      summary: "Deletar usuário"
+      description: "Deleta um usuário por seu id"
+      operationId: "deleteUser"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "integer"
+          format: "int64"
+
+      responses:
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Book not found"
 
     put:
       tags:
@@ -186,48 +474,36 @@ paths:
         405:
           description: "Validation exception"
 
-    get:  #buscar todos os usuários
+  /v1/api/user/updateLoanSpecificId/{id}:
+    put: #atualizar um livro
       tags:
         - "user-controller"
-      summary: "Buscar todos os usuários"
-      description: ""
-      operationId: "findAllUser"
-      produces:
+      summary: "Atualizar specific id de emprestimos em livros"
+      description: "Endpoint que atualiza o specific id de loan na tabela de book no banco de dados."
+      operationId: "updateSpecificIdLoan"
+      consumes:
         - "application/json"
-      responses:
-        200:
-          description: "successful operation"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/User"
-        401:
-          description: "Unauthorized"
-        403:
-          description: "Forbidden"
-        404:
-          description: "Not Found"
-
-    delete: #Deletar usuário
-      tags:
-        - "user-controller"
-      summary: "Deletar usuário"
-      description: ""
-      operationId: "deleteUser"
       produces:
         - "application/json"
       parameters:
         - name: "id"
           in: "path"
           required: true
-          type: "integer"
-          format: "int64"
+          type: "string"
 
+        - in: body
+          name: "BookDTO"
+          description: "Parametros necessarios para atualizar livro em biblioteca."
+          required: true
+          schema:
+            $ref: "#/definitions/UserLoanSpecificID"
       responses:
         400:
           description: "Invalid ID supplied"
         404:
           description: "Book not found"
+        405:
+          description: "Validation exception"
 
 definitions:
   #UserAPP
@@ -244,6 +520,10 @@ definitions:
         type: "integer"
       fone:
         type: "string"
+
+  #UserLoanSpecificID
+  UserLoanSpecificID:
+    type: "string"
 
   #Book
   Book:
@@ -266,3 +546,11 @@ definitions:
       yearBook:
         type: "string"
         format: "date"
+
+  #BookLoanSpecificID
+  BookLoanSpecificID:
+    type: "string"
+
+  #BookStatus
+  BookStatus:
+    type: "boolean"
