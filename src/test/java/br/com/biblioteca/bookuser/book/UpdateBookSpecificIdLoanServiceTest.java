@@ -14,7 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
 import java.util.Optional;
 
-import static br.com.biblioteca.bookuser.book.builders.BookBuilder.createUserApp;
+import static br.com.biblioteca.bookuser.book.builders.BookBuilder.createBook;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -42,7 +42,7 @@ public class UpdateBookSpecificIdLoanServiceTest {
     @DisplayName("Deve atualizar o loan specific id do livro")
     void shouldUpdateBook() {
 
-        when(bookRepository.findBySpecificID(anyString())).thenReturn(Optional.of(createUserApp().id(1L).build()));
+        when(bookRepository.findBySpecificID(anyString())).thenReturn(Optional.of(createBook().id(1L).build()));
 
         updateBookSpecificIdLoanServiceBook.updateSpecificId("teste update", "001");
 

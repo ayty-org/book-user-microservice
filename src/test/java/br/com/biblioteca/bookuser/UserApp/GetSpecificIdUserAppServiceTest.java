@@ -1,9 +1,6 @@
 package br.com.biblioteca.bookuser.UserApp;
 
 import br.com.biblioteca.bookuser.UserApp.builders.UserAppBuilder;
-import br.com.biblioteca.bookuser.book.Book;
-import br.com.biblioteca.bookuser.exceptions.BookNotAvailableException;
-import br.com.biblioteca.bookuser.exceptions.BookNotFoundException;
 import br.com.biblioteca.bookuser.exceptions.UserAppNotFoundException;
 import br.com.biblioteca.bookuser.user.UserApp;
 import br.com.biblioteca.bookuser.user.UserAppRepository;
@@ -16,16 +13,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
-import static br.com.biblioteca.bookuser.book.builders.BookBuilder.createUserApp;
+import static br.com.biblioteca.bookuser.UserApp.builders.UserAppBuilder.createUserApp;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -49,7 +44,7 @@ public class GetSpecificIdUserAppServiceTest {
     void shouldFindByIdBook() {
 
         when(userAppRepository.findBySpecificID(anyString())).thenReturn(
-                Optional.of(UserAppBuilder.createUserApp().name("Nome Teste GET").loanSpecificID("001").build())
+                Optional.of(createUserApp().name("Nome Teste GET").loanSpecificID("001").build())
         );
 
         UserApp result = this.findUserApp.findBySpecificID("001");

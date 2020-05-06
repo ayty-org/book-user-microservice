@@ -59,7 +59,7 @@ public class UpdateUserAppServiceTest {
                 () -> assertThat(result.getAge(), is(20)),
                 () -> assertThat(result.getFone(), is("teste fone")),
                 () -> assertThat(result.getSpecificID(), is("001")),
-                () -> assertNull(result.getLoanSpecificID())
+                () -> assertThat(result.getLoanSpecificID(), is("null"))
         );
     }
 

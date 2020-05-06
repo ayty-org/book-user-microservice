@@ -89,7 +89,7 @@ public class UserAppControllerTest {
                 .andExpect(jsonPath("$.age", is(20)))
                 .andExpect(jsonPath("$.fone", is("teste fone")))
                 .andExpect(jsonPath("$.specificID", is("001")))
-                .andExpect(jsonPath("$.loanSpecificID", is(nullValue())));
+                .andExpect(jsonPath("$.loanSpecificID", is("null")));
 
         verify(getUserAppService).find(anyLong());
     }
@@ -109,7 +109,7 @@ public class UserAppControllerTest {
                 .andExpect(jsonPath("$.age", is(20)))
                 .andExpect(jsonPath("$.fone", is("teste fone")))
                 .andExpect(jsonPath("$.specificID", is("001")))
-                .andExpect(jsonPath("$.loanSpecificID", is(nullValue())));
+                .andExpect(jsonPath("$.loanSpecificID", is("null")));
 
         verify(getSpecificIdUserAppService).findBySpecificID(anyString());
     }
@@ -132,13 +132,13 @@ public class UserAppControllerTest {
                 .andExpect(jsonPath("$[0].age", is(20)))
                 .andExpect(jsonPath("$[0].fone", is("teste fone")))
                 .andExpect(jsonPath("$[0].specificID", is("001")))
-                .andExpect(jsonPath("$[0].loanSpecificID", is(nullValue())))
+                .andExpect(jsonPath("$[0].loanSpecificID", is("null")))
                 .andExpect(jsonPath("$[1].id", is(2)))
                 .andExpect(jsonPath("$[1].name", is("teste nome")))
                 .andExpect(jsonPath("$[1].age", is(20)))
                 .andExpect(jsonPath("$[1].fone", is("teste fone")))
                 .andExpect(jsonPath("$[1].specificID", is("001")))
-                .andExpect(jsonPath("$[1].loanSpecificID", is(nullValue())));
+                .andExpect(jsonPath("$[1].loanSpecificID", is("null")));
         ;
 
         verify(listUserAppService).findAll();
@@ -164,7 +164,7 @@ public class UserAppControllerTest {
                 .andExpect(jsonPath("$.content[0].age", is(20)))
                 .andExpect(jsonPath("$.content[0].fone", is("teste fone")))
                 .andExpect(jsonPath("$.content[0].specificID", is("001")))
-                .andExpect(jsonPath("$.content[0].loanSpecificID", is(nullValue())));
+                .andExpect(jsonPath("$.content[0].loanSpecificID", is("null")));
         ;
 
         verify(listPageUserAppService).findPage(pageable);

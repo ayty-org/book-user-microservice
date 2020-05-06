@@ -57,12 +57,12 @@ public class ListPageUserAppServiceTest {
                 () -> assertThat(userAppPage.getContent().get(0).getAge(), is(20)),
                 () -> assertThat(userAppPage.getContent().get(0).getFone(), is("teste fone")),
                 () -> assertThat(userAppPage.getContent().get(0).getSpecificID(), is("001")),
-                () -> assertNull(userAppPage.getContent().get(0).getLoanSpecificID()),
+                () -> assertThat(userAppPage.getContent().get(0).getLoanSpecificID(), is("null")),
                 () -> assertThat(userAppPage.getContent().get(1).getName(), is("teste nome")),
                 () -> assertThat(userAppPage.getContent().get(1).getAge(), is(20)),
                 () -> assertThat(userAppPage.getContent().get(1).getFone(), is("teste fone")),
                 () -> assertThat(userAppPage.getContent().get(1).getSpecificID(), is("001")),
-                () -> assertNull(userAppPage.getContent().get(1).getLoanSpecificID())
+                () -> assertThat(userAppPage.getContent().get(1).getLoanSpecificID(), is("null"))
         );
     }
 

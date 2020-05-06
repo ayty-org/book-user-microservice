@@ -32,7 +32,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collections;
 
-import static br.com.biblioteca.bookuser.book.builders.BookBuilder.createUserApp;
+import static br.com.biblioteca.bookuser.book.builders.BookBuilder.createBook;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
@@ -86,7 +86,7 @@ public class BookControllerTest {
     @DisplayName("Pesquisa livro por id")
     void whenValidGetIdBook_thenReturnsBook() throws Exception {
 
-        when(getBookService.find(anyLong())).thenReturn(createUserApp().build());
+        when(getBookService.find(anyLong())).thenReturn(createBook().build());
 
         mockMvc.perform(get("/v1/api/book/{id}", 1L)
                 .accept(MediaType.APPLICATION_JSON))
@@ -100,7 +100,7 @@ public class BookControllerTest {
                 .andExpect(jsonPath("$.yearBook", is("1964-07-12")))
                 .andExpect(jsonPath("$.status", is(true)))
                 .andExpect(jsonPath("$.specificID", is("001")))
-                .andExpect(jsonPath("$.loanSpecificID", is(nullValue())));
+                .andExpect(jsonPath("$.loanSpecificID", is("null")));
 
         verify(getBookService).find(anyLong());
     }
@@ -123,7 +123,7 @@ public class BookControllerTest {
     void whenValidListBook_thenReturnsBook() throws Exception {
 
         when(listBookService.findAll()).thenReturn(Lists.newArrayList(
-                createUserApp().id(1L).build(), createUserApp().id(2L).specificID("002").build()
+                createBook().id(1L).build(), createBook().id(2L).specificID("002").build()
         ));
 
         mockMvc.perform(get("/v1/api/book")
@@ -139,7 +139,7 @@ public class BookControllerTest {
                 .andExpect(jsonPath("$[0].yearBook", is("1964-07-12")))
                 .andExpect(jsonPath("$[0].status", is(true)))
                 .andExpect(jsonPath("$[0].specificID", is("001")))
-                .andExpect(jsonPath("$[0].loanSpecificID", is(nullValue())))
+                .andExpect(jsonPath("$[0].loanSpecificID", is("null")))
                 .andExpect(jsonPath("$[1].id", is(2)))
                 .andExpect(jsonPath("$[1].author", is("teste author")))
                 .andExpect(jsonPath("$[1].resume", is("teste resume")))
@@ -148,7 +148,7 @@ public class BookControllerTest {
                 .andExpect(jsonPath("$[1].yearBook", is("1964-07-12")))
                 .andExpect(jsonPath("$[1].status", is(true)))
                 .andExpect(jsonPath("$[1].specificID", is("002")))
-                .andExpect(jsonPath("$[1].loanSpecificID", is(nullValue())));
+                .andExpect(jsonPath("$[1].loanSpecificID", is("null")));
 
         verify(listBookService).findAll();
     }
@@ -157,7 +157,7 @@ public class BookControllerTest {
     @DisplayName("Pesquisa todos os livros com paginação")
     void whenValidListPageBook_thenReturnsBookPage() throws Exception {
 
-        Page<Book> bookPage = new PageImpl<>(Collections.singletonList(createUserApp().id(1L).build()));
+        Page<Book> bookPage = new PageImpl<>(Collections.singletonList(createBook().id(1L).build()));
 
         Pageable pageable = PageRequest.of(0, 2);
 
@@ -175,7 +175,7 @@ public class BookControllerTest {
                 .andExpect(jsonPath("$.content[0].yearBook", is("1964-07-12")))
                 .andExpect(jsonPath("$.content[0].status", is(true)))
                 .andExpect(jsonPath("$.content[0].specificID", is("001")))
-                .andExpect(jsonPath("$.content[0].loanSpecificID", is(nullValue())));
+                .andExpect(jsonPath("$.content[0].loanSpecificID", is("null")));
 
         verify(listPageBookService).findPage(pageable);
     }
@@ -185,7 +185,7 @@ public class BookControllerTest {
     void whenValidGetSpecificIdBook_thenReturnsBook() throws Exception {
 
         when(getSpecificIdBookService.findBySpecificID(anyString())).thenReturn(
-                createUserApp().specificID("001").loanSpecificID("001").build());
+                createBook().specificID("001").loanSpecificID("001").build());
 
         mockMvc.perform(get("/v1/api/book/getBookSpecificId/{id}", "001")
                 .accept(MediaType.APPLICATION_JSON))
@@ -224,8 +224,8 @@ public class BookControllerTest {
     void whenValidListSpecificIdBook_thenReturnsBook() throws Exception {
 
         when(listBookSpecificIdService.findAllSpecificId(anyString())).thenReturn(Lists.newArrayList(
-                createUserApp().id(1L).build(),
-                createUserApp().id(2L).build()
+                createBook().id(1L).build(),
+                createBook().id(2L).build()
         ));
 
         mockMvc.perform(get("/v1/api/book/getAllLoanSpecificId/{id}","001")
@@ -241,7 +241,7 @@ public class BookControllerTest {
                 .andExpect(jsonPath("$[0].yearBook", is("1964-07-12")))
                 .andExpect(jsonPath("$[0].status", is(true)))
                 .andExpect(jsonPath("$[0].specificID", is("001")))
-                .andExpect(jsonPath("$[0].loanSpecificID", is(nullValue())))
+                .andExpect(jsonPath("$[0].loanSpecificID", is("null")))
                 .andExpect(jsonPath("$[1].id", is(2)))
                 .andExpect(jsonPath("$[1].author", is("teste author")))
                 .andExpect(jsonPath("$[1].resume", is("teste resume")))
@@ -250,7 +250,7 @@ public class BookControllerTest {
                 .andExpect(jsonPath("$[1].yearBook", is("1964-07-12")))
                 .andExpect(jsonPath("$[1].status", is(true)))
                 .andExpect(jsonPath("$[1].specificID", is("001")))
-                .andExpect(jsonPath("$[1].loanSpecificID", is(nullValue())));
+                .andExpect(jsonPath("$[1].loanSpecificID", is("null")));
 
         verify(listBookSpecificIdService).findAllSpecificId(anyString());
     }

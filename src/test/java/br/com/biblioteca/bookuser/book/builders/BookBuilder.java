@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 public class BookBuilder {
 
-    public static Book.Builder createUserApp() {
+    public static Book.Builder createBook() {
         return Book
                 .builder()
                 .id(1L)
@@ -17,7 +17,7 @@ public class BookBuilder {
                 .yearBook(LocalDate.ofEpochDay(25 - 04 - 2020))
                 .status(true)
                 .specificID("001")
-                .loanSpecificID(null);
+                .loanSpecificID("null");
     }
 
 }

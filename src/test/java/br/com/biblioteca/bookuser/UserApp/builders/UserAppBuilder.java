@@ -12,6 +12,6 @@ public class UserAppBuilder {
                 .age(20)
                 .fone("teste fone")
                 .specificID("001")
-                .loanSpecificID(null);
+                .loanSpecificID("null");
     }
 }

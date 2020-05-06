@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static br.com.biblioteca.bookuser.book.builders.BookBuilder.createUserApp;
+import static br.com.biblioteca.bookuser.book.builders.BookBuilder.createBook;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -42,8 +42,8 @@ public class ListBookSpecificIdServiceTest {
     void shouldFindAllBook() {
 
         when(bookRepository.findAllSpecificID(anyString())).thenReturn(
-                Stream.of(createUserApp().author("Author Teste GET 01").specificID("001").loanSpecificID("001").build(),
-                        createUserApp().author("Author Teste GET 02").specificID("002").loanSpecificID("002").build()).collect(Collectors.toList())
+                Stream.of(createBook().author("Author Teste GET 01").specificID("001").loanSpecificID("001").build(),
+                        createBook().author("Author Teste GET 02").specificID("002").loanSpecificID("002").build()).collect(Collectors.toList())
         );
 
         List<Book> result = this.findAllBook.findAllSpecificId("001");
